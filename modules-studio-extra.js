@@ -15,7 +15,7 @@
   function downloadText(name,text,type='application/json'){downloadBlob(name,new Blob([text],{type}));}
   async function sha256(blob){const h=await crypto.subtle.digest('SHA-256',await blob.arrayBuffer());return [...new Uint8Array(h)].map(b=>b.toString(16).padStart(2,'0')).join('');}
   function cancelSim(){simRunning=false;if(simFrame)cancelAnimationFrame(simFrame);simFrame=0;}
-  function selectExtra(name){activeExtra=name;root()?.querySelectorAll('.studio-nav .sheet-button').forEach(b=>b.classList.remove('active-tool'));const ids={SIMULATION:'studioExtraSimulation','FILE SPLITTER':'studioExtraSplitter','FILE ASSEMBLER':'studioExtraAssembler'};document.getElementById(ids[name])?.classList.add('active-tool');}
+  function selectExtra(name){activeExtra=name;root()?.querySelectorAll('.studio-nav .sheet-button').forEach(b=>b.classList.remove('active-tool'));const ids={SIMULATION:'studioExtraSimulation','FILE SPLITTER':'studioExtraSplitter','FILE ASSEMBLER':'studioExtraAssembler','IMAGE COMPRESSOR':'studioExtraImageCompressor'};document.getElementById(ids[name])?.classList.add('active-tool');}
 
   function addNavButton(nav,label,id,handler){if(document.getElementById(id))return;nav.insertAdjacentHTML('beforeend',button(label,id));document.getElementById(id)?.addEventListener('click',handler);}
   function augment(){
@@ -25,12 +25,18 @@
     addNavButton(nav,'SIMULATION','studioExtraSimulation',()=>{selectExtra('SIMULATION');renderSimulation();});
     addNavButton(nav,'FILE SPLITTER','studioExtraSplitter',()=>{selectExtra('FILE SPLITTER');renderSplitter();});
     addNavButton(nav,'FILE ASSEMBLER','studioExtraAssembler',()=>{selectExtra('FILE ASSEMBLER');renderAssembler();});
+    addNavButton(nav,'IMAGE COMPRESSOR','studioExtraImageCompressor',()=>{selectExtra('IMAGE COMPRESSOR');renderImageCompressor();});
   }
   function watch(){if(observer)observer.disconnect();observer=new MutationObserver(()=>augment());observer.observe(root(),{childList:true,subtree:true});augment();}
   function stopWatch(){if(observer){observer.disconnect();observer=null;}cancelSim();activeExtra='';}
 
   function geometry(points,w=720,h=360,pad=34){if(!points.length)return[];let minLat=Math.min(...points.map(p=>+p.lat)),maxLat=Math.max(...points.map(p=>+p.lat)),minLon=Math.min(...points.map(p=>+p.lon)),maxLon=Math.max(...points.map(p=>+p.lon));if(minLat===maxLat){minLat-=.001;maxLat+=.001;}if(minLon===maxLon){minLon-=.001;maxLon+=.001;}return points.map(p=>({x:pad+(+p.lon-minLon)/(maxLon-minLon)*(w-pad*2),y:pad+(maxLat-+p.lat)/(maxLat-minLat)*(h-pad*2),lat:+p.lat,lon:+p.lon,alt:+p.alt||0}));}
   function interp(points,t){if(!points.length)return null;if(points.length===1)return {...points[0],leg:1};const s=Math.max(0,Math.min(.999999,t))*(points.length-1),i=Math.floor(s),f=s-i,a=points[i],b=points[Math.min(i+1,points.length-1)];return{x:a.x+(b.x-a.x)*f,y:a.y+(b.y-a.y)*f,lat:a.lat+(b.lat-a.lat)*f,lon:a.lon+(b.lon-a.lon)*f,alt:a.alt+(b.alt-a.alt)*f,leg:i+1};}
+  function renderImageCompressor(){
+    cancelSim();const p=pane();if(!p)return;
+    p.innerHTML='<h2 class="module-heading">IMAGE COMPRESSOR</h2><p class="module-copy">Convert large images to smaller JPEGs locally while preserving the full pixel resolution. Nothing is sent to a server. <a href="./tools/Salem_1851_Full_Resolution_GitHub_Compressor.html">Open the standalone compressor</a>.</p><iframe title="Nougat local image compressor" src="./tools/Salem_1851_Full_Resolution_GitHub_Compressor.html" style="width:100%;min-height:710px;border:0;" loading="lazy"></iframe>';
+  }
+
   function renderSimulation(){
     cancelSim();const p=pane();if(!p)return;const pts=geometry(waypoints()),poly=pts.map(v=>`${v.x},${v.y}`).join(' ');
     p.innerHTML=`<h2 class="module-heading">SIMULATION</h2><p class="module-copy">Local trajectory simulation only. No command is transmitted to aircraft hardware.</p><div class="studio-simulation-frame"><svg viewBox="0 0 720 360">${pts.length?`<polyline class="studio-sim-path" points="${poly}" fill="none"/>${pts.map((v,i)=>`<circle class="studio-sim-waypoint" cx="${v.x}" cy="${v.y}" r="5"/><text class="studio-sim-label" x="${v.x+8}" y="${v.y-8}">WP${i+1}</text>`).join('')}<circle id="studioSimCraft" class="studio-sim-craft" cx="${pts[0].x}" cy="${pts[0].y}" r="8"/>`:'<text x="34" y="56" class="studio-sim-label">Add waypoints in Flight Plan first.</text>'}</svg></div><div class="module-toolbar">${button('Start Simulation','simStart',false,pts.length?'':'disabled')}${button('Pause','simPause',false,pts.length?'':'disabled')}${button('Reset','simReset',false,pts.length?'':'disabled')}</div><div class="module-field"><span>SPEED</span><select id="simSpeed"><option value=".03">Slow</option><option value=".08" selected>Normal</option><option value=".2">Fast</option></select></div><table class="diagnostic-table"><tbody><tr><th>Leg</th><td id="simLeg">-</td></tr><tr><th>Latitude</th><td id="simLat">-</td></tr><tr><th>Longitude</th><td id="simLon">-</td></tr><tr><th>Altitude</th><td id="simAlt">-</td></tr><tr><th>Progress</th><td id="simPct">0%</td></tr></tbody></table>`;

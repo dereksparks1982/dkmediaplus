@@ -39,6 +39,10 @@ The primary application targets **Linux**. The web companions run in modern mobi
 
 The browser interface is a frontend, not a cloud-storage service. To browse and play your own media, the Nougat host must be online. Network access may require your own HTTPS bridge and appropriate security settings.
 
+## Full-resolution image compressor
+
+In **STUDIO → IMAGE COMPRESSOR**, compress large images locally to JPEG files sized for GitHub uploads **without reducing their pixel dimensions**. The same tool is available as a standalone, offline-capable HTML file: [Full-resolution Image Compressor](tools/Salem_1851_Full_Resolution_GitHub_Compressor.html). It was created for the 6,502 × 6,674 pixel 1851 Salem map; the map itself belongs in Capital & Consequence at `assets/artwork/maps/` and is not copied into Nougat. The default 23 MiB target is below a 25 MB upload threshold. Check detailed lettering after lossy JPEG compression. No image is uploaded to Nougat or a third-party service.
+
 ## Project and documentation
 
 - [Roadmap](ROADMAP.md): planned features and current development priorities.

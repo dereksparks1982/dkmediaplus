@@ -1,3 +1,11 @@
+## Unreleased: browser Studio full-resolution image compressor (2026-11-03)
+
+- Add the standalone browser tool `tools/Salem_1851_Full_Resolution_GitHub_Compressor.html` for local JPEG compression with original pixel dimensions retained.
+- Add a Studio IMAGE COMPRESSOR button and embedded tool pane, without relocating existing Studio controls.
+- Default to a 23 MiB target to fit GitHub's 25 MB browser-upload ceiling; preserve original JPEG bytes when already under the target.
+- Document that the 1851 Salem map is an asset of Capital & Consequence, not Nougat, and that image data never leaves the browser.
+- Source integration only: browser runtime acceptance remains pending. Do not bump the accepted app version or tag a release.
+
 ## Unreleased: Web playback reliability and host isolation (2026-10-30)
 
 - Share per-host browser-local Continue Watching between full Web Player and Quick Watch, with safe migration of older resume data and a phone Continue filter.
