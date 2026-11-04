@@ -1,6 +1,13 @@
 # Nougat Media Plus
 
-**Nougat Media Plus** is a Linux-first media center and entertainment platform developed by **Elderred Softworks LLC**.
+## DK Softworks · House of Culture
+
+**DK Softworks** is the studio and project identity. **DK** draws on the Russian abbreviation **ДК** for **Дом культуры** (*Dom kultury*), meaning **“House of Culture.”** Traditionally, a *dom kultury* is a community center for the arts, creativity, performance, and learning.
+
+This identifies the present project or its stewardship; it does not change existing licenses, copyright holders, original creators, or historical credits.
+
+
+**Nougat Media Plus** is a Linux-first media center and entertainment platform developed under the **DK Softworks** studio identity.
 
 Current development line: **v0.0.69**. It brings personal movies and TV, music and radio, live television, games, production tools, and network capabilities together in one project.
 
@@ -53,4 +60,4 @@ In **STUDIO → IMAGE COMPRESSOR**, compress large images locally to JPEG files 
 - [Documentation](docs/): technical design notes, feature-specific documentation, and source audits.
 - [Legal Notice](LEGAL_NOTICE.md), [License](LICENSE), [Copyright](COPYRIGHT.md), and [Third-Party Notices](THIRD_PARTY_NOTICES.md).
 
-**Nougat Media Plus · Elderred Softworks LLC**
+**Nougat Media Plus · DK Softworks**
