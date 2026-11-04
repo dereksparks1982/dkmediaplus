@@ -2,7 +2,8 @@
 
 **Status:** Canonical project operating law  
 **Scope:** Nougat Media Suite only  
-**Authority:** The owner has final authority over scope, acceptance, release state, and exceptions.
+**Authority:** The owner has final authority over scope, acceptance, release state, and exceptions.  
+**Current studio brand:** DK Softworks, from Russian **ДК** = **Дом культуры** (*Dom kultury*), “House of Culture.” This is a brand attribution; the licensor and copyright provisions below are unchanged.
 
 ## 1. Purpose
 
