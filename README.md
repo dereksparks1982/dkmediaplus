@@ -30,7 +30,7 @@ DK Watch is the straightforward way to watch from a phone or tablet: connect to 
 | Area | Purpose |
 | --- | --- |
 | **Media Library & Player** | Organize movies and television, view posters and metadata, resume playback, select audio/subtitle tracks, navigate chapters, and manage local and network media. |
-| **DK Watch & Web Player** | Use the browser companion to explore and stream your library on phones, tablets, and computers. Compatible direct-play and server-transcoded streams are supported where available. |
+| **DK Watch & Web Player** | Explore and stream your library on phones, tablets, and computers, with compatible direct-play or host-transcoded streams. The full web player also includes a standard-gamepad navigation foundation (hardware testing pending). |
 | **Live TV & World TV** | Discover compatible broadcast tuners and streams, organize channels, and work with TV guides and international broadcasters. |
 | **Music & Radio** | Play and explore audio sources, internet radio, compatible receivers, and radio/signal features. |
 | **Games** | Organize games and supported emulators, artwork, controller settings, and game launching in the DK Media Plus experience. User-owned game content and firmware are not included. |
