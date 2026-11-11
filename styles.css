@@ -449,3 +449,61 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--green-hot);
   }
   .app-content { left: 66px; }
 }
+
+
+/* Sidebar containment: give each module an independent readable hit target.
+   The rail scrolls instead of squeezing controls into overlapping rows. */
+.module-rail {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 5px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  clip-path: none;
+  contain: layout paint;
+}
+.module-rail .rail-button {
+  position: relative;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+  min-height: 48px;
+  max-height: none;
+  width: 100%;
+  padding: 5px 2px;
+  line-height: 1.15;
+  white-space: normal;
+  overflow: visible;
+}
+.module-rail .rail-button .rail-icon {
+  display: block;
+  flex: 0 0 auto;
+}
+.module-rail .rail-button span:last-child {
+  display: block;
+  width: 100%;
+  overflow-wrap: anywhere;
+  text-align: center;
+  white-space: normal;
+  line-height: 1.2;
+}
+.module-rail .rail-n {
+  position: relative;
+  left: auto;
+  bottom: auto;
+  flex: 0 0 auto;
+  margin: 8px auto 2px;
+  pointer-events: none;
+}
+.app-content { left: 86px; right: 0; }
+@media (max-width:700px) {
+  .module-rail { width: 58px; padding: 6px 3px; }
+  .module-rail .rail-button { min-height: 45px; padding: 4px 1px; }
+  .module-rail .rail-button span:last-child { font-size: 7px; }
+  .app-content { left: 66px; }
+}
