@@ -13,7 +13,7 @@
   let panel = 'Diagnostics';
   let lastReport = null;
   const logs = [];
-  const panels = ['Diagnostics','Server','Virus Scan','Metadata','Logs'];
+  const panels = ['Diagnostics','Server','Controller','Virus Scan','Metadata','Logs'];
 
   function log(message){
     logs.unshift(`${new Date().toLocaleString()}  ${message}`);
@@ -113,6 +113,8 @@
   }
 
   async function renderPanel(){
+    if(panel==='Controller') { window.DKMediaControllerSettings?.render(document.getElementById('systemBody')); return; }
+    window.DKMediaControllerSettings?.stopMonitor();
     if(panel==='Server')return renderServer();
     if(panel==='Virus Scan')return renderSecurity();
     if(panel==='Metadata')return renderMetadata();
