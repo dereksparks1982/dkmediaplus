@@ -192,7 +192,7 @@
     });
     if (realView === 'module') {
       moduleTitle.textContent = moduleLabels[view] || String(view).toUpperCase();
-      moduleMessage.textContent = 'This web player uses the standalone Nougat Media Plus shell. Home, Player and Library are live for remote media playback; this module remains in the standalone application.';
+      moduleMessage.textContent = 'This web player uses the standalone DK Media Plus shell. Home, Player and Library are live for remote media playback; this module remains in the standalone application.';
       moduleView.classList.add('active');
     }
     if (pushHistory) {
@@ -428,7 +428,7 @@
   async function loadCatalogOnce() {
     const revision = hostRevision;
     refreshButton.disabled = true;
-    catalogStatus.textContent = 'Loading Nougat Library...';
+    catalogStatus.textContent = 'Loading DK Media Library...';
     try {
       const payload = await fetchJson(apiUrl('/nougat/v1/catalog'));
       if (revision !== hostRevision) return;

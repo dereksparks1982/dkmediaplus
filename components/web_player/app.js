@@ -123,7 +123,7 @@
     compatButton.textContent = compatibility ? 'Try Direct Play' : 'Browser Compatibility';
     setPlayerStatus(compatibility
       ? 'Starting Nougat browser compatibility stream…'
-      : 'Starting direct playback from your Nougat server…');
+      : 'Starting direct playback from your DK Media Plus server…');
     player.src = streamUrl(item, compatibility);
     player.load();
     const promise = player.play();
@@ -181,11 +181,11 @@
       if (Number.isFinite(available) && total > 0) {
         healthBadge.textContent = `Nougat online · ${available}/${total} ready`;
       } else {
-        healthBadge.textContent = health.lanOnly ? 'Nougat LAN · Online' : 'Nougat server · Online';
+        healthBadge.textContent = health.lanOnly ? 'Nougat LAN · Online' : 'DK Media Plus server · Online';
       }
       return true;
     } catch (_) {
-      healthBadge.textContent = 'Nougat server offline';
+      healthBadge.textContent = 'DK Media Plus server offline';
       return false;
     }
   };
@@ -198,7 +198,7 @@
 
   const loadCatalogOnce = async () => {
     refreshButton.disabled = true;
-    catalogStatus.textContent = 'Loading your Nougat Library…';
+    catalogStatus.textContent = 'Loading your DK Media Library…';
     try {
       const payload = await fetchJson(apiUrl('/nougat/v1/catalog'));
       if (!payload.ok) throw new Error(payload.error || 'Catalog unavailable');
@@ -219,7 +219,7 @@
         catalogStatus.textContent = `Server unavailable. Showing the last loaded library: ${error.message || 'Retry later.'}`;
       } else {
         renderLibrary();
-        catalogStatus.textContent = `Library unavailable: ${error.message || 'Nougat server is not ready.'}`;
+        catalogStatus.textContent = `Library unavailable: ${error.message || 'DK Media Plus server is not ready.'}`;
       }
     } finally {
       refreshButton.disabled = false;
@@ -241,7 +241,7 @@
     emptyPlayer.setAttribute('aria-hidden', 'true');
     setPlayerStatus(usingCompatibility
       ? 'Playing through Nougat browser compatibility mode.'
-      : 'Playing directly from your Nougat server.', 1800);
+      : 'Playing directly from your DK Media Plus server.', 1800);
   });
   player.addEventListener('waiting', () => {
     setPlayerStatus('Buffering from Nougat…');

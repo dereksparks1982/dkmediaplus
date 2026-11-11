@@ -1,3 +1,11 @@
+## DK Media Plus v0.0.69 identity and Linux packaging source repair (2026-11-11)
+
+- Active product identity is **DK Media Plus**, developed under **DK Softworks**. Replace retired product names in native window text, legal notices, web viewers, PWA manifests, README, desktop launcher, and native output names.
+- Native CMake target `dk_media_plus` outputs `dk-media-plus`; `dk_media_web_service` outputs `dk-media-web-service`. Keep old runtime/data paths as compatibility inputs, never reset an existing user's settings or library during rebranding.
+- The Linux packaging candidate at `tools/packaging/create_appdir.py` stages an AppDir and can invoke locally provided linuxdeploy/appimagetool without downloading tools or using GitHub Actions. It rejects unfinished/stub production builds, missing media/AI runtimes, and Git LFS pointers.
+- GitHub Pages links use the renamed repository path. Real Pages deployment, native build, packaging, VLC/AI/Jellyfin runtimes, and Surface playback **remain unverified** and must not be represented as accepted.
+- Keep the existing approved icon artwork until a replacement is explicitly approved; filename and historical lineage alone do not authorize an icon redesign. Prior release notes retain historical names. Existing licenses and copyright attribution remain unchanged.
+
 ## Unreleased: browser Studio full-resolution image compressor (2026-11-03)
 
 - Add the standalone browser tool `tools/Salem_1851_Full_Resolution_GitHub_Compressor.html` for local JPEG compression with original pixel dimensions retained.

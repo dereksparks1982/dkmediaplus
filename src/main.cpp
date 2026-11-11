@@ -172,7 +172,7 @@ struct VlcApi {
             handle = dlopen(names[i], RTLD_NOW);
             if (handle) break;
         }
-        if (!handle) { err = "VLC/libVLC was not found. Install VLC, then reopen Nougat Media Plus."; return false; }
+        if (!handle) { err = "VLC/libVLC was not found. Install VLC, then reopen DK Media Plus."; return false; }
 #define LOAD_SYM(field, name) do { field = (decltype(field))dlsym(handle, name); if (!field) { err = std::string("Missing libVLC symbol: ") + name; return false; } } while(0)
         LOAD_SYM(new_, "libvlc_new");
         LOAD_SYM(release, "libvlc_release");
@@ -858,13 +858,13 @@ static std::string choose_media_library_folder_dialog() {
 static std::string choose_tmdb_credential_dialog() {
     std::string credential = run_command_capture(
         "command -v zenity >/dev/null 2>&1 && "
-        "zenity --entry --hide-text --title='Nougat Media Plus External Recommendations' "
+        "zenity --entry --hide-text --title='DK Media Plus External Recommendations' "
         "--text='Enter a TMDb API key or read access token' 2>/dev/null");
     if (!credential.empty()) return credential;
     const std::string py =
         "python3 -c \"import tkinter as tk; from tkinter import simpledialog; "
         "root=tk.Tk(); root.withdraw(); "
-        "v=simpledialog.askstring('Nougat Media Plus External Recommendations',"
+        "v=simpledialog.askstring('DK Media Plus External Recommendations',"
         "'Enter a TMDb API key or read access token',show='*'); print(v if v else '')\" 2>/dev/null";
     return run_command_capture(py);
 }
@@ -872,13 +872,13 @@ static std::string choose_tmdb_credential_dialog() {
 static std::string choose_security_auth_key_dialog() {
     std::string credential = run_command_capture(
         "command -v zenity >/dev/null 2>&1 && "
-        "zenity --entry --hide-text --title='Nougat Security Analysis' "
+        "zenity --entry --hide-text --title='DK Media Plus Security Analysis' "
         "--text='Enter your free abuse.ch Community Auth-Key (leave blank to clear)' 2>/dev/null");
     if (!credential.empty()) return credential;
     const std::string py =
         "python3 -c \"import tkinter as tk; from tkinter import simpledialog; "
         "root=tk.Tk(); root.withdraw(); "
-        "v=simpledialog.askstring('Nougat Security Analysis',"
+        "v=simpledialog.askstring('DK Media Plus Security Analysis',"
         "'Enter your free abuse.ch Community Auth-Key (leave blank to clear)',show='*'); print(v if v else '')\" 2>/dev/null";
     return run_command_capture(py);
 }
@@ -1041,7 +1041,7 @@ struct DebugUiState {
     std::mutex mutex;
     reddmedia::DiagnosticInput input;
     reddmedia::DiagnosticReport report;
-    std::string status = "Run Checks to inspect Nougat Media Plus.";
+    std::string status = "Run Checks to inspect DK Media Plus.";
     bool busy = false;
     bool updated = false;
     bool hasReport = false;
@@ -1209,7 +1209,7 @@ static std::string game_system_for_path(const std::string& path) {
     if (ends_with_lower(lower, ".gg")) return "Sega Game Gear";
 
     // v48 Atari repair: the owner's 2600 library uses raw .bin dumps.
-    // Nougat does not currently own another .bin console format, so .bin is
+    // DK Media Plus does not currently own another .bin console format, so .bin is
     // Atari 2600 for this emulator set. Save states (.sta) stay invisible.
     if (ends_with_lower(lower, ".a26") || ends_with_lower(lower, ".bin"))
         return "Atari 2600";
@@ -2075,7 +2075,7 @@ public:
     int networkContentScroll = 0;
     // NOUGAT_V54_FILE_SPLITTER_PROFESSIONAL
     // File Splitter is a button inside Studio > Tools. Its complete workflow
-    // stays inside Nougat with no external chooser/question/info dialogs.
+    // stays inside DK Media Plus with no external chooser/question/info dialogs.
     StudioPanel studioPanel = StudioPanel::Tools;
     bool studioAssemblerMode = false; // NOUGAT_V59_SEPARATE_FILE_ASSEMBLER
     Rect studioToolsTab, studioDroneTab, studioFileSplitterToolBtn, studioFileAssemblerToolBtn, studioBackToToolsBtn;
@@ -2371,7 +2371,7 @@ public:
     std::shared_ptr<HomeUiState> homeState = std::make_shared<HomeUiState>();
     std::thread homeWorker;
     std::atomic<bool> homeNeedsRefresh{false};
-    // NOUGAT_V58_NATIVE_FIX_MATCH: all metadata matching stays inside Nougat.
+    // NOUGAT_V58_NATIVE_FIX_MATCH: all metadata matching stays inside DK Media Plus.
     bool fixMatchVisible=false;
     reddmedia::LibraryNode fixMatchNode;
     std::string fixMatchQuery;
@@ -3489,17 +3489,17 @@ public:
 
     void set_window_identity() {
         XClassHint classHint;
-        classHint.res_name = const_cast<char*>("nougat-media-plus");
-        classHint.res_class = const_cast<char*>("NougatMediaPlus");
+        classHint.res_name = const_cast<char*>("dk-media-plus");
+        classHint.res_class = const_cast<char*>("DKMediaPlus");
         XSetClassHint(d, win, &classHint);
 
         // GNOME Shell can associate a raw X11 window with the installed
-        // NougatMediaPlus.desktop entry through this stable application ID.
+        // DKMediaPlus.desktop entry through this stable application ID.
         // This prevents the running application from falling back to the
         // generic gear icon when launched outside the desktop file.
         Atom gtkApplicationId = XInternAtom(d, "_GTK_APPLICATION_ID", False);
         Atom utf8 = XInternAtom(d, "UTF8_STRING", False);
-        const char* appId = "com.elderredsoftworks.NougatMediaPlus";
+        const char* appId = "com.dksoftworks.DKMediaPlus";
         XChangeProperty(d, win, gtkApplicationId, utf8, 8, PropModeReplace,
                         reinterpret_cast<const unsigned char*>(appId),
                         static_cast<int>(std::strlen(appId)));
@@ -3507,12 +3507,12 @@ public:
         // Ubuntu/GNOME primarily associates a running X11 window with a
         // desktop entry by application ID / WM_CLASS.  Use a canonical
         // reverse-DNS desktop ID so a raw executable launch still resolves
-        // to the installed Nougat launcher instead of the generic gear.
+        // to the installed DK Media Plus launcher instead of the generic gear.
         Atom bamfDesktopFile = XInternAtom(d, "_BAMF_DESKTOP_FILE", False);
         const char* home = std::getenv("HOME");
         std::string desktopPath = home ? std::string(home) +
-            "/.local/share/applications/com.elderredsoftworks.NougatMediaPlus.desktop" :
-            "com.elderredsoftworks.NougatMediaPlus.desktop";
+            "/.local/share/applications/com.dksoftworks.DKMediaPlus.desktop" :
+            "com.dksoftworks.DKMediaPlus.desktop";
         XChangeProperty(d, win, bamfDesktopFile, utf8, 8, PropModeReplace,
                         reinterpret_cast<const unsigned char*>(desktopPath.c_str()),
                         static_cast<int>(desktopPath.size()));
@@ -3520,7 +3520,7 @@ public:
     }
 
     void set_window_title() {
-        const char* title = "Nougat Media Plus";
+        const char* title = "DK Media Plus";
         XStoreName(d, win, title);
         Atom netWmName = XInternAtom(d, "_NET_WM_NAME", False);
         Atom utf8 = XInternAtom(d, "UTF8_STRING", False);
@@ -3600,7 +3600,7 @@ public:
         }
         if (mediaServer.persistent_enabled()) mediaServer.start();
         else mediaServer.refresh();
-        v53SystemStatus="Run Checks to inspect Nougat Media Plus."; // NOUGAT_V57_NO_CHILD_SAFE_SYSTEM
+        v53SystemStatus="Run Checks to inspect DK Media Plus."; // NOUGAT_V57_NO_CHILD_SAFE_SYSTEM
         if (const char* alertArea=std::getenv("NOUGAT_ALERT_AREA")) publicAlertArea=alertArea;
         liveTvChannels = tunerBackend.load_channels();
         liveTvPrograms = tunerBackend.load_guide();
@@ -3681,7 +3681,7 @@ public:
     bool page_uses_connected_square_frame(ViewMode view) const {
         return view == ViewMode::Home || view == ViewMode::VideoPlayer ||
                view == ViewMode::Library || view == ViewMode::Discover ||
-               view == ViewMode::LiveTV || view == ViewMode::WorldTV || view == ViewMode::Radio || view == ViewMode::Nougat ||
+               view == ViewMode::LiveTV || view == ViewMode::WorldTV || view == ViewMode::Radio || view == ViewMode::DK Media Plus ||
                view == ViewMode::Stream || view == ViewMode::Studio ||
                view == ViewMode::Games || view == ViewMode::Network || view == ViewMode::Debug;
     }
@@ -3742,7 +3742,7 @@ public:
             topX += topStep;
         }
 
-        // Permanent Nougat module rail.  The top row intentionally remains
+        // Permanent DK Media Plus module rail.  The top row intentionally remains
         // operational in this build so Derek can compare every target before
         // authorizing any later removal of duplicate top navigation.
         moduleRailRect = {4, kTopBarH + 4, kModuleRailW - 8, std::max(1, H - kTopBarH - 8)};
@@ -3997,7 +3997,7 @@ public:
             libraryToolX += kCompactButtonW;
         }
         // Search belongs on its own row below the green action buttons. It
-        // uses the same sheet INPUT FIELD grammar as the other Nougat fields.
+        // uses the same sheet INPUT FIELD grammar as the other DK Media Plus fields.
         const int librarySearchY = kPageControlBottom + 10;
         librarySearchBtn = {libraryViewRight - kCompactButtonW, librarySearchY, kCompactButtonW, 30};
         librarySearchRect = {libraryInnerX, librarySearchY,
@@ -4080,7 +4080,7 @@ public:
     void apply_video_layout() {
         if (!video) return;
         if (currentView == ViewMode::Home || currentView == ViewMode::Library || currentView == ViewMode::Discover ||
-            currentView == ViewMode::Radio || currentView == ViewMode::Nougat || currentView == ViewMode::Stream || currentView == ViewMode::Studio || currentView == ViewMode::Games || currentView == ViewMode::P2P || currentView == ViewMode::Network ||
+            currentView == ViewMode::Radio || currentView == ViewMode::DK Media Plus || currentView == ViewMode::Stream || currentView == ViewMode::Studio || currentView == ViewMode::Games || currentView == ViewMode::P2P || currentView == ViewMode::Network ||
             currentView == ViewMode::Debug || currentView == ViewMode::LiveTV || currentView == ViewMode::WorldTV) {
             hide_player_activity_overlay_window();
             XUnmapWindow(d, video);
@@ -5284,7 +5284,7 @@ public:
         fill(fullscreenTransportWindow,{0,0,overlayW,overlayH},rgb8(24,18,15));
         const ViewPalette palette=palette_for(ViewMode::VideoPlayer);
 
-        // v0.0.55: transport symbols are drawn as substantial Nougat glyphs
+        // v0.0.55: transport symbols are drawn as substantial DK Media Plus glyphs
         // instead of tiny font characters. This keeps their weight and scale
         // visually matched to the approved stitched sheet-button surfaces.
         const auto draw_chevron=[&](const Rect& r,int direction,int offset,unsigned long ink){
@@ -5371,8 +5371,8 @@ public:
             hide_player_activity_overlay_window();
             XClearWindow(d, video);
             const std::string message = activeGameTitle.empty()
-                ? "Starting game inside Nougat..."
-                : "Starting " + activeGameTitle + " inside Nougat...";
+                ? "Starting game inside DK Media Plus..."
+                : "Starting " + activeGameTitle + " inside DK Media Plus...";
             text(video, 24, 34, head_to_width(message, std::max(120, videoW - 48)), rgb8(248,235,214));
             XFlush(d);
             return;
@@ -5571,8 +5571,8 @@ public:
 
         // Fixed brand and server/version areas never scroll. The tab row is
         // hard-clipped to the center lane, so a tab disappears at either edge
-        // instead of painting over the Nougat identity or the version block.
-        const std::string versionLabel = "v0.0.68";
+        // instead of painting over the DK Media Plus identity or the version block.
+        const std::string versionLabel = "v0.0.69";
         const int versionWidth = text_width(versionLabel);
         const int versionX = W - 10 - versionWidth;
         bool serverBusy = false;
@@ -6612,7 +6612,7 @@ public:
         }
         sync_stream_platform_from_url();
         ytdlpStatus = std::string("Direct Watch: opening ") + stream_platform_name(streamPlatform) +
-                      " in Nougat Media Plus's native player...";
+                      " in DK Media Plus's native player...";
         redraw();
         start_ytdlp_play();
     }
@@ -6712,7 +6712,7 @@ public:
     }
     void draw_p2p_screen(Drawable target) {
         const bool embeddedInSearch = currentView == ViewMode::Nougat;
-        const ViewPalette palette = palette_for(embeddedInSearch ? ViewMode::Nougat : ViewMode::P2P);
+        const ViewPalette palette = palette_for(embeddedInSearch ? ViewMode::DK Media Plus : ViewMode::P2P);
         const unsigned long dark = palette.text;
         const unsigned long fieldInk = col(0x0d0d,0x1b1b,0x2a2a);
         unsigned long border = p2pMagnetFocused ? col(0x7070,0xb0b0,0xdada) : palette.border;
@@ -6740,7 +6740,7 @@ public:
             cx=std::min(cx,p2pMagnetRect.x+p2pMagnetRect.w-8);
             line(target,cx,p2pMagnetRect.y+5,cx,p2pMagnetRect.y+23,fieldInk);
         }
-        apply_page_clip(embeddedInSearch ? ViewMode::Nougat : ViewMode::P2P);
+        apply_page_clip(embeddedInSearch ? ViewMode::DK Media Plus : ViewMode::P2P);
         if (embeddedInSearch) draw_concept_field(target,p2pOutputRect,palette.field,palette.border,false);
         else { fill(target,p2pOutputRect,palette.field); outline(target,p2pOutputRect,palette.border); }
         text(target,p2pOutputRect.x+8,p2pOutputRect.y+18,tail_to_width("Download folder: "+p2pOutputFolder,p2pOutputRect.w-16),fieldInk);
@@ -6975,7 +6975,7 @@ public:
 
             std::string error;
             bool ok = client->initialize(error);
-            if (ok) set_stage(0.06, "Connected to Nougat media server.", "Connected");
+            if (ok) set_stage(0.06, "Connected to DK Media Plus media server.", "Connected");
             if (ok && operation == 1) {
                 set_stage(0.10, "Linking folder and scanning Jellyfin library...", "Linking...");
                 ok = client->add_media_folder(folder, media_type, error);
@@ -7519,7 +7519,7 @@ public:
         clear_up_next_overlay();
         if (!start_tv_autoplay_index(target)) {
             upNextVisible = true;
-            upNextMessage = "Nougat could not start the next episode yet. Automatic retry is active.";
+            upNextMessage = "DK Media Plus could not start the next episode yet. Automatic retry is active.";
             draw_video_message();
         }
     }
@@ -7629,7 +7629,7 @@ public:
             tvAutoplayRetryIndex = -1;
             upNextVisible = true;
             upNextHasEpisode = false;
-            upNextMessage = "Nougat could not start the resolved next episode after three attempts.";
+            upNextMessage = "DK Media Plus could not start the resolved next episode after three attempts.";
             if (currentView == ViewMode::VideoPlayer) draw_video_message();
             return;
         }
@@ -7864,7 +7864,7 @@ public:
 
             std::string error;
             if (!client->initialize(error)) {
-                fail_refresh("LOCAL is waiting for the Nougat media server: " + error);
+                fail_refresh("LOCAL is waiting for the DK Media Plus media server: " + error);
                 return;
             }
             { std::lock_guard<std::mutex> lock(state->mutex); state->progress = 0.08; }
@@ -7936,7 +7936,7 @@ public:
             { std::lock_guard<std::mutex> lock(state->mutex); state->progress = 0.34; }
 
             // v0.0.29 Continue Watching artwork hierarchy:
-            // episode Primary still -> matching season poster -> series poster -> Nougat fallback.
+            // episode Primary still -> matching season poster -> series poster -> DK Media Plus fallback.
             // This prevents black TV cards while still giving an episode its own image when Jellyfin has one.
             std::map<std::string, reddmedia::LibraryNode> continue_artwork_nodes;
             const auto has_local_art = [](const reddmedia::LibraryNode& node) {
@@ -8830,7 +8830,7 @@ public:
         const std::string query=nougat_v57_trim(fixMatchQuery);
         if (query.empty()) { fixMatchStatus="Enter a title to search."; redraw(); return; }
         if (!recommendationEngine->external_credential_available()) {
-            fixMatchStatus="Fix Match needs the saved TMDb credential already used by Nougat metadata."; redraw(); return;
+            fixMatchStatus="Fix Match needs the saved TMDb credential already used by DK Media Plus metadata."; redraw(); return;
         }
         const int year=fixMatchYearText.empty()?0:std::max(0,std::atoi(fixMatchYearText.c_str()));
         std::string error;
@@ -9778,7 +9778,7 @@ public:
         if (cached!=liveTvLogoCache.end()) { poster=cached->second; return true; }
         if (!liveTvLogoAttempted.insert(key).second) return false;
 
-        // Owner-approved local network artwork. These files ship with Nougat so
+        // Owner-approved local network artwork. These files ship with DK Media Plus so
         // Live TV does not need a runtime web request to identify NBC/PBS/etc.
         const std::string network=live_tv_builtin_network_logo(channel);
         if (!network.empty()) {
@@ -10060,7 +10060,7 @@ public:
             }
             if ((event.state & ControlMask) && (event.state & ShiftMask) &&
                 (ks==XK_c || ks==XK_C) && studioConvertBatchPreviewReady) {
-                std::string summary="Nougat Studio folder batch preview\nSource: "+
+                std::string summary="DK Studio folder batch preview\nSource: "+
                     studioConvertBatchSource+"\nOutput: "+studioConvertFolder+
                     "\nPreset: "+::nougat::studio::preset_name(studioConvertPreset)+
                     "\nEligible: "+std::to_string(studioConvertBatchPlan.exports.size())+
@@ -10120,7 +10120,7 @@ public:
                         studioConvertStatus="Active jobs cannot be removed from history.";
                     }
                 } else {
-                    std::string detail="Nougat Studio job #"+std::to_string(item->id)+
+                    std::string detail="DK Studio job #"+std::to_string(item->id)+
                         "\nState: "+::nougat::studio::state_name(item->state)+
                         "\nPreset: "+::nougat::studio::preset_name(item->preset)+
                         "\nInput: "+item->input.string()+
@@ -10301,7 +10301,7 @@ public:
         }
         const std::string tool = exe_dir() + "/tools/nougat_file_splitter.py";
         if (!exists_file(tool)) {
-            studioStatus = "File Splitter worker is missing from the Nougat project.";
+            studioStatus = "File Splitter worker is missing from the DK Media Plus project.";
             redraw();
             return;
         }
@@ -10326,7 +10326,7 @@ public:
             }
             if (std::atoi(studioTargetMiBText.c_str())>476) { studioStatus="Target MiB must be 476 or less to remain below the 500 MB upload ceiling."; redraw(); return; }
             if (studioAnalyzedSourcePath != studioSourcePath) {
-                studioStatus = "Analyzing this source first so Nougat can recommend the piece count.";
+                studioStatus = "Analyzing this source first so DK Media Plus can recommend the piece count.";
                 start_studio_splitter_action("analyze");
                 return;
             }
@@ -10336,7 +10336,7 @@ public:
         } else if (action == "verify") {
             if (studioSourcePath.empty() ||
                 (!studio_manifest_path(studioSourcePath) && !studio_split_part_path(studioSourcePath))) {
-                studioStatus = "Verify needs a Nougat parts manifest or one numbered split part.";
+                studioStatus = "Verify needs a DK Media Plus parts manifest or one numbered split part.";
                 redraw(); return;
             }
             args.insert(args.end(),{"verify",studioSourcePath});
@@ -10344,7 +10344,7 @@ public:
         } else if (action == "reassemble") {
             if (studioSourcePath.empty() ||
                 (!studio_manifest_path(studioSourcePath) && !studio_split_part_path(studioSourcePath))) {
-                studioStatus = "Assemble needs a Nougat parts manifest or one numbered split part.";
+                studioStatus = "Assemble needs a DK Media Plus parts manifest or one numbered split part.";
                 redraw(); return;
             }
             args.insert(args.end(),{"reassemble",studioSourcePath});
@@ -10496,7 +10496,7 @@ public:
         studioBrowserScroll = 0;
         studioInputFocus = 0;
         studioInputSelectAll = false;
-        studioStatus = "Browse inside Nougat. No popup window will open.";
+        studioStatus = "Browse inside DK Media Plus. No popup window will open.";
         redraw();
     }
 
@@ -10586,7 +10586,7 @@ public:
             if (studioBrowserPurpose == StudioBrowserPurpose::SourceFolder) {
                 studioSourcePath = selected;
                 studio_source_edited();
-                studioStatus = "Folder selected. Nougat is analyzing it now.";
+                studioStatus = "Folder selected. DK Media Plus is analyzing it now.";
             } else {
                 studioOutputPath = selected;
                 studioStatus = "Download location selected.";
@@ -10602,10 +10602,10 @@ public:
         studioSourcePath = studioBrowserSelectedPath;
         studio_source_edited();
         studioStatus = studioAssemblerMode
-            ? "Assembler input selected. Nougat will discover and verify the complete part set."
+            ? "Assembler input selected. DK Media Plus will discover and verify the complete part set."
             : (studio_manifest_path(studioSourcePath)
                 ? "Parts manifest selected."
-                : "Source selected. Nougat is analyzing it now.");
+                : "Source selected. DK Media Plus is analyzing it now.");
         close_studio_browser();
     }
 
@@ -10859,7 +10859,7 @@ public:
             return;
         }
         if (std::filesystem::exists(output) || std::filesystem::is_symlink(output)) {
-            studioConvertStatus = "Export already exists. Nougat will not overwrite it: " + output.filename().string();
+            studioConvertStatus = "Export already exists. DK Media Plus will not overwrite it: " + output.filename().string();
             redraw();
             return;
         }
@@ -11000,7 +11000,7 @@ public:
                     studioDroneSimulationStartedMs=now_ms();
                     studioDroneSimulationProgress=0.0;
                     update_drone_simulation_state(0.0);
-                    studioDroneStatus="Running Nougat trajectory simulation. Real-aircraft command transmission remains disabled.";
+                    studioDroneStatus="Running DK Media Plus trajectory simulation. Real-aircraft command transmission remains disabled.";
                 }
                 redraw(); return;
             }
@@ -11104,7 +11104,7 @@ public:
                 studioAssemblerMode=true;
                 studioInputFocus=0;
                 studioInputSelectAll=false;
-                studioStatus="Choose a parts manifest or any numbered split part. Nougat will discover the complete set.";
+                studioStatus="Choose a parts manifest or any numbered split part. DK Media Plus will discover the complete set.";
                 redraw();
             }
             return;
@@ -11183,7 +11183,7 @@ public:
             if (studioSuggestedPieces>0) {
                 studioPiecesText=std::to_string(studioSuggestedPieces);
                 studioPiecesUserEdited=false;
-                studioStatus="Using Nougat's recommended piece count.";
+                studioStatus="Using DK Media Plus's recommended piece count.";
             } else studioStatus="Analyze a source first to get a recommendation.";
             redraw(); return;
         }
@@ -11870,7 +11870,7 @@ public:
             if(currentView==ViewMode::VideoPlayer) switch_view(ViewMode::WorldTV); else redraw(); return;
         }
         if(!open_world_tv_location(result.url,index,stations[static_cast<std::size_t>(index)].name,result.referrer,result.user_agent)){
-            worldTvReconnectEnabled=false; worldTvStatus="Nougat's native player could not open the verified source for "+stations[static_cast<std::size_t>(index)].name+"."; switch_view(ViewMode::WorldTV); redraw(); return;
+            worldTvReconnectEnabled=false; worldTvStatus="DK Media Plus's native player could not open the verified source for "+stations[static_cast<std::size_t>(index)].name+"."; switch_view(ViewMode::WorldTV); redraw(); return;
         }
         worldTvResolvedUrl=result.url;
         worldTvReconnectEnabled=true;
@@ -12150,7 +12150,7 @@ public:
             if (label=="Cellular Lab") {
                 radioPanel=RadioPanel::Cellular;
                 radioCellularSubtab=0;
-                // Cellular Lab state is rendered directly in the native Nougat panel.
+                // Cellular Lab state is rendered directly in the native DK Media Plus panel.
                 redraw(); return;
             }
             if (label=="Satellite" || label=="Weather Sat" || label=="Amateur Sat") {
@@ -12372,7 +12372,7 @@ public:
             const auto& stations = world_tv_catalog();
             const int top = liveTvListBox.y + 66;
             text(target, liveTvListBox.x + 12, top + 2,
-                 "Internet broadcaster feeds. Nougat does not filter this catalog by your location.",
+                 "Internet broadcaster feeds. DK Media Plus does not filter this catalog by your location.",
                  palette.muted);
             int rowY = top + 18;
             for (std::size_t i = 0; i < stations.size(); ++i) {
@@ -13043,7 +13043,7 @@ public:
 
     reddmedia::DiagnosticInput diagnostic_input() {
         reddmedia::DiagnosticInput input;
-        input.app_version = "Nougat Media Plus v0.0.59";
+        input.app_version = "DK Media Plus v0.0.59";
         input.executable_path = resolved_executable_path();
         input.project_root = exe_dir();
         input.current_view = current_view_name();
@@ -13622,14 +13622,14 @@ public:
         if (nougat.node_running()) {
             nougat.stop_node();
             std::lock_guard<std::mutex> lock(nougatState->mutex);
-            nougatState->status = "Nougat node stopped.";
+            nougatState->status = "DK Media Plus node stopped.";
             nougatState->updated = true;
             return;
         }
         std::string error;
         if (nougat.start_node(48731, error)) {
             std::lock_guard<std::mutex> lock(nougatState->mutex);
-            nougatState->status = "Nougat node listening on port 48731.";
+            nougatState->status = "DK Media Plus node listening on port 48731.";
             nougatState->updated = true;
         } else {
             std::lock_guard<std::mutex> lock(nougatState->mutex);
@@ -13684,7 +13684,7 @@ public:
     }
 
     void handle_nougat_motion(const XMotionEvent& event) {
-        if (currentView != ViewMode::Nougat || nougatPanel != NougatPanel::Crawler || !nougatOutputSelecting || event.window != win) return;
+        if (currentView != ViewMode::DK Media Plus || nougatPanel != NougatPanel::Crawler || !nougatOutputSelecting || event.window != win) return;
         int line_index = nougat_log_line_at(event.y);
         std::size_t count = 0;
         { std::lock_guard<std::mutex> lock(nougatState->mutex); count = nougatState->crawl_log.size(); }
@@ -13926,10 +13926,10 @@ public:
                 verdict = "SCAN CANCELLED";
                 if (!report.empty() && report.back() != '\n') report += '\n';
                 report += "\nRESULT: SCAN CANCELLED\n";
-                report += "Partial results above were preserved. Nougat stopped the complete scanner process group.\n";
+                report += "Partial results above were preserved. DK Media Plus stopped the complete scanner process group.\n";
             } else if (!run.started) {
                 verdict = "SCAN ERROR";
-                report = "VERDICT=SCAN ERROR\nNougat could not start the security worker.\n";
+                report = "VERDICT=SCAN ERROR\nDK Media Plus could not start the security worker.\n";
             }
 
             std::lock_guard<std::mutex> lock(state->mutex);
@@ -14581,7 +14581,7 @@ public:
         if (std::find(folders.begin(), folders.end(), folder) == folders.end()) folders.push_back(folder);
         if (!save_game_rom_folders(folders)) {
             std::lock_guard<std::mutex> lock(gameState->mutex);
-            gameState->status = "Nougat could not save that ROM folder.";
+            gameState->status = "DK Media Plus could not save that ROM folder.";
             gameState->updated = true;
             return;
         }
@@ -15244,7 +15244,7 @@ public:
                     first_game_executable(runners);
                 if (runner.empty()) {
                     error =
-                        "Xenia Canary for Windows was found, but Nougat cannot find "
+                        "Xenia Canary for Windows was found, but DK Media Plus cannot find "
                         "a Linux runner. Set NOUGAT_XENIA_RUNNER to your Proton/Wine launcher.";
                     return false;
                 }
@@ -15290,7 +15290,7 @@ public:
 
         // NOUGAT_V61_MESEN_PROVEN_PLAYER_EMBED_RESTORE
         // Restore the owner-tested v0.0.48 Mesen presentation path.
-        // NES and SNES share this exact backend inside Nougat's Video Player.
+        // NES and SNES share this exact backend inside DK Media Plus's Video Player.
         if (backend_lower == "mesen" ||
             backend_lower == "mesen2") {
             // NOUGAT_V63_MESEN_EMBEDDED_WINDOW
@@ -15346,7 +15346,7 @@ public:
         }
 
         // Stella uses a clean game surface with its integrated Options UI on Tab.
-        // Keep it windowed for Nougat's native reparenting host; Nougat owns the
+        // Keep it windowed for DK Media Plus's native reparenting host; DK Media Plus owns the
         // player geometry and exposes Stella's Options from the top-edge gesture.
         if (backend_lower == "stella") {
             request.argv = {emulator, "-fullscreen", "0", "-center", "0", launchPath};
@@ -15475,9 +15475,9 @@ public:
         if (launchPath.empty()) {
             std::lock_guard<std::mutex> lock(gameState->mutex);
             if (selected.system == "DOS" && selected.archived)
-                gameState->status = "Nougat could not safely prepare that DOS game package from its ZIP archive.";
+                gameState->status = "DK Media Plus could not safely prepare that DOS game package from its ZIP archive.";
             else if (selected.archived)
-                gameState->status = "Nougat could not safely extract that ROM from its ZIP archive.";
+                gameState->status = "DK Media Plus could not safely extract that ROM from its ZIP archive.";
             else
                 gameState->status = "That game is unavailable. Press Refresh after reconnecting its game folder.";
             gameState->updated = true;
@@ -15513,7 +15513,7 @@ public:
 
         {
             std::lock_guard<std::mutex> lock(gameState->mutex);
-            gameState->status = "Starting " + selected.title + " inside Nougat Video Player...";
+            gameState->status = "Starting " + selected.title + " inside DK Media Plus Video Player...";
             gameState->updated = true;
         }
         redraw();
@@ -15929,7 +15929,7 @@ public:
             const auto folders=load_game_rom_folders();
             if (folders.empty()) text(target,gamesListBox.x+14,y,"No user game folders linked yet.",palette.muted);
             for (const std::string& folder:folders) { text(target,gamesListBox.x+14,y,head_to_width(folder,gamesListBox.w-28),palette.text); y+=22; }
-            text(target,gamesListBox.x+14,gamesListBox.y+gamesListBox.h-38,"Cartridge ZIPs stay zipped; DOS ZIP packages prepare automatically in Nougat's persistent private cache.",palette.muted);
+            text(target,gamesListBox.x+14,gamesListBox.y+gamesListBox.h-38,"Cartridge ZIPs stay zipped; DOS ZIP packages prepare automatically in DK Media Plus's persistent private cache.",palette.muted);
             text(target,gamesListBox.x+14,gamesListBox.y+gamesListBox.h-18,"Artwork: local sidecar first, then cached Libretro Named_Boxarts lookup by ROM filename.",palette.muted);
         }
     }
@@ -16021,7 +16021,7 @@ public:
     void draw_studio_browser(Drawable target,const Rect& panel,const ViewPalette& palette) {
         studioBrowserRows.clear();
         text(target,panel.x+18,panel.y+28,studio_browser_title(),palette.text);
-        text(target,panel.x+18,panel.y+50,"Browse entirely inside Nougat. Folders open in this page; no system chooser appears.",palette.muted);
+        text(target,panel.x+18,panel.y+50,"Browse entirely inside DK Media Plus. Folders open in this page; no system chooser appears.",palette.muted);
 
         const int topY=panel.y+64;
         studioBrowserUpBtn={panel.x+18,topY,82,30};
@@ -16089,7 +16089,7 @@ public:
         // small decoration embedded inside the page content.
         // NOUGAT_V66_UI_AUTHORITY_FILM_STRIP_REMOVED
         section_text(target, 28, kTopBarH*2+22, "STUDIO", palette.text);
-        text(target, 28, kTopBarH*2+44, "Nougat creation, production, and media-processing workspace.", palette.muted);
+        text(target, 28, kTopBarH*2+44, "DK Media Plus creation, production, and media-processing workspace.", palette.muted);
 
         studioToolsTab={kPageLeft,kTopBarH*2+56,126,34};
         // NOUGAT_V66_UI_AUTHORITY_SEPARATE_TOOLS_DRONE
@@ -16146,7 +16146,7 @@ public:
             Rect labHeader{panel.x+pad,panel.y+pad,panel.w-pad*2,48};
             fill(target,labHeader,rgb8(8,28,19));
             outline(target,labHeader,hudGreenDim);
-            text(target,labHeader.x+10,labHeader.y+19,"NOUGAT DRONE LAB",hudGreen);
+            text(target,labHeader.x+10,labHeader.y+19,"DK DRONE LAB",hudGreen);
             text(target,labHeader.x+10,labHeader.y+38,"MISSION CONTROL  |  DIRECTOR SHOT  |  SIMULATION-ONLY",hudMuted);
 
             const int statusX=labHeader.x+std::max(250,labHeader.w/2);
@@ -16374,7 +16374,7 @@ public:
             button_on(target,studioBackToToolsBtn,"Back to Tools");
             text(target,panel.x+18,panel.y+28,"MEDIA CONVERT",palette.text);
             text(target,panel.x+18,panel.y+51,
-                 "FFmpeg exports run in Nougat's persistent Studio queue. Originals are never overwritten.",palette.muted);
+                 "FFmpeg exports run in DK Media Plus's persistent Studio queue. Originals are never overwritten.",palette.muted);
             const int left=panel.x+18;
             const int right=panel.x+panel.w-18;
             studioConvertSourceBtn={left,panel.y+72,145,32};
@@ -16456,7 +16456,7 @@ public:
         text(target,panel.x+18,panel.y+28,studioAssemblerMode?"FILE ASSEMBLER":"FILE SPLITTER",palette.text);
         text(target,panel.x+18,panel.y+52,
              studioAssemblerMode
-                ? "Choose a manifest or any numbered part. Nougat discovers, verifies, rebuilds, and SHA-256 checks the original."
+                ? "Choose a manifest or any numbered part. DK Media Plus discovers, verifies, rebuilds, and SHA-256 checks the original."
                 : "Add a file, folder, ZIP/manifest, or paste a path. Target MiB and Pieces recalculate together.",palette.muted);
 
         if (studioAssemblerMode) {
@@ -17034,7 +17034,7 @@ public:
         recommendationEngine->record_started(descriptor_for_node(playable), history_error);
         if (!open_media(playable.path, 0)) {
             std::lock_guard<std::mutex> lock(discoverState->mutex);
-            discoverState->status = "Nougat could not start that Local media file in the native player.";
+            discoverState->status = "DK Media Plus could not start that Local media file in the native player.";
             redraw();
             return;
         }
@@ -17293,7 +17293,7 @@ public:
         draw_visible_vertical_scrollbar(target,discoverResultBox,discoverDetailsScroll,static_cast<int>(detail_lines.size()),visible_lines,palette);
         if (result.item.id.find("tmdb:") != 0U) {
             button_on(target, discoverOpenBtn,
-                      result.item.local_path.empty() ? "Open in Library" : "Play in Nougat Media Plus");
+                      result.item.local_path.empty() ? "Open in Library" : "Play in DK Media Plus");
         }
         if (result.item.local_path.empty() && has_availability &&
             availability.link.rfind("https://www.themoviedb.org/", 0U) == 0U) {
@@ -17321,7 +17321,7 @@ public:
         std::string error;
         p2p.prioritize_range(0,std::min<std::uint64_t>(16ULL*1024ULL*1024ULL,p2p.selected_file_size()));
         if (!p2pStream.start(error)) { p2pUiStatus=error; redraw(); return; }
-        p2pUiStatus="Streaming. Nougat Media Plus will prioritize pieces around playback and seeks.";
+        p2pUiStatus="Streaming. DK Media Plus will prioritize pieces around playback and seeks.";
         switch_view(ViewMode::VideoPlayer);
         if (!open_p2p_stream_location(p2pStream.url())) {
             p2pStream.stop();
@@ -17462,7 +17462,7 @@ public:
     std::string read_clipboard_x11() {
         Atom clipboard = XInternAtom(d, "CLIPBOARD", False);
         Atom utf8 = XInternAtom(d, "UTF8_STRING", False);
-        Atom property = XInternAtom(d, "REDDMEDIA_CLIPBOARD_TEXT", False);
+        Atom property = XInternAtom(d, "DK_MEDIA_PLUS_CLIPBOARD_TEXT", False);
         XDeleteProperty(d, win, property);
         XConvertSelection(d, clipboard, utf8, property, win, CurrentTime);
         XFlush(d);
@@ -17861,7 +17861,7 @@ public:
     void show_file_menu(int x, int y) {
         std::vector<MenuItem> items;
         items.push_back({"Open File", MenuAction::OpenFile, 0});
-        items.push_back({"Exit Nougat Media Plus", MenuAction::ExitApp, 0});
+        items.push_back({"Exit DK Media Plus", MenuAction::ExitApp, 0});
         show_menu(win, x, y, items);
     }
     void show_audio_menu(int x, int y) {
@@ -18191,8 +18191,8 @@ public:
             }
         }
         if (target == win && currentView == ViewMode::Stream && y >= 198 && y < 234) { scroll_button_row(ytdlpButtonsScrollX,4,delta); return true; }
-        if (target == win && currentView == ViewMode::Nougat && nougatPanel == NougatPanel::P2P && y >= 224 && y < 266) { scroll_button_row(p2pButtonsScrollX,5,delta); return true; }
-        if (target == win && currentView == ViewMode::Nougat && nougatPanel == NougatPanel::P2P && nougatNetworkAdvanced &&
+        if (target == win && currentView == ViewMode::DK Media Plus && nougatPanel == NougatPanel::P2P && y >= 224 && y < 266) { scroll_button_row(p2pButtonsScrollX,5,delta); return true; }
+        if (target == win && currentView == ViewMode::DK Media Plus && nougatPanel == NougatPanel::P2P && nougatNetworkAdvanced &&
             nougatNetworkActionsViewport.contains(x,y)) {
             scroll_button_row(nougatNetworkButtonsScrollX,4,delta,nougatNetworkActionsViewport.w);
             return true;
@@ -18296,7 +18296,7 @@ public:
             redraw();
             return true;
         }
-        if (currentView == ViewMode::Nougat && target == win) {
+        if (currentView == ViewMode::DK Media Plus && target == win) {
             if (nougatPanel == NougatPanel::Search && nougatResultsBox.contains(x,y)) {
                 nougatResultScroll = std::max(0, nougatResultScroll + (button == Button4 ? -1 : 1));
                 redraw();
@@ -18427,12 +18427,12 @@ public:
             show_url_context_menu(x, y);
             return;
         }
-        if (currentView == ViewMode::Nougat && nougatPanel == NougatPanel::P2P && target == win && p2pMagnetRect.contains(x,y) && button == Button3) {
+        if (currentView == ViewMode::DK Media Plus && nougatPanel == NougatPanel::P2P && target == win && p2pMagnetRect.contains(x,y) && button == Button3) {
             p2pMagnetFocused=true;
             XSetInputFocus(d,win,RevertToParent,CurrentTime);
             redraw(); show_p2p_url_context_menu(x,y); return;
         }
-        if (currentView == ViewMode::Nougat && target == win && nougatPanel == NougatPanel::Crawler && nougatCrawlLogBox.contains(x,y) && button == Button3) {
+        if (currentView == ViewMode::DK Media Plus && target == win && nougatPanel == NougatPanel::Crawler && nougatCrawlLogBox.contains(x,y) && button == Button3) {
             nougatOutputFocused=true; nougatInputFocus=NougatInputFocus::NoFocus;
             redraw(); show_nougat_output_context_menu(x,y); return;
         }
@@ -18536,7 +18536,7 @@ public:
             items.push_back({"Delay -0.5s (earlier)", MenuAction::SubtitleDelayMinus, 0});
             items.push_back({"Delay +0.5s (later)", MenuAction::SubtitleDelayPlus, 0});
             items.push_back({"Reset Subtitle Delay", MenuAction::SubtitleDelayReset, 0});
-            items.push_back({"Exit Nougat Media Plus", MenuAction::ExitApp, 0});
+            items.push_back({"Exit DK Media Plus", MenuAction::ExitApp, 0});
             show_menu(win, 8, kTopBarH, items);
             return;
         }
@@ -19149,7 +19149,7 @@ public:
                             redraw();
                         }
                     }
-                    else if (currentView == ViewMode::Nougat && nougatPanel == NougatPanel::P2P && p2pMagnetFocused) {
+                    else if (currentView == ViewMode::DK Media Plus && nougatPanel == NougatPanel::P2P && p2pMagnetFocused) {
                         if (ks == XK_Escape) { p2pMagnetFocused=false; p2pMagnetSelectAll=false; redraw(); }
                         else if (ks == XK_Return || ks == XK_KP_Enter) { start_p2p_magnet(); }
                         else if ((e.xkey.state & ControlMask) && (ks == XK_a || ks == XK_A)) { p2pMagnetSelectAll=!p2pMagnet.empty(); redraw(); }
@@ -19353,7 +19353,7 @@ public:
             static long long lastSecurityProgressRedrawMs = 0;
             bool securityBusyForRedraw = false;
             { std::lock_guard<std::mutex> lock(securityState->mutex); securityBusyForRedraw = securityState->busy; }
-            if (!fullscreen && currentView == ViewMode::Nougat && nougatPanel == NougatPanel::VirusScan &&
+            if (!fullscreen && currentView == ViewMode::DK Media Plus && nougatPanel == NougatPanel::VirusScan &&
                 securityBusyForRedraw && now_ms() - lastSecurityProgressRedrawMs >= 250LL) {
                 lastSecurityProgressRedrawMs = now_ms();
                 redraw();
@@ -19390,7 +19390,7 @@ public:
                 redraw();
             }
             // NOUGAT_V39_DIAGNOSTIC_REPAIR: queued full sweep after playback
-            if (!fullscreen && currentView == ViewMode::Nougat && nougatPanel == NougatPanel::P2P && now_ms()-lastP2PRedrawMs >= 500) { lastP2PRedrawMs=now_ms(); maybe_auto_scan_completed_p2p(); redraw(); }
+            if (!fullscreen && currentView == ViewMode::DK Media Plus && nougatPanel == NougatPanel::P2P && now_ms()-lastP2PRedrawMs >= 500) { lastP2PRedrawMs=now_ms(); maybe_auto_scan_completed_p2p(); redraw(); }
             if (playerActivityOverlayVisible) {
                 const long long activityNow = now_ms();
                 if (!player_activity_is_active(activityNow, lastPlayerActivityMotionMs)) {
@@ -19548,7 +19548,7 @@ static void nougat_enter_gnome_app_scope(int argc, char** argv) {
     self[length] = '\0';
 
     const std::string unit =
-        "app-com.elderredsoftworks.NougatMediaPlus-" +
+        "app-com.dksoftworks.DKMediaPlus-" +
         std::to_string(static_cast<long long>(getpid())) + ".scope";
 
     std::vector<std::string> command = {
@@ -19558,7 +19558,7 @@ static void nougat_enter_gnome_app_scope(int argc, char** argv) {
         "--quiet",
         "--collect",
         "--slice=app.slice",
-        "--description=Nougat Media Plus",
+        "--description=DK Media Plus",
         "--unit=" + unit,
         "/usr/bin/env",
         "NOUGAT_MEDIA_PLUS_APP_SCOPED=1",
@@ -19579,14 +19579,14 @@ int main(int argc, char** argv) {
     if (argc > 1 && std::string(argv[1]) == "--v66-media-plus-ui-self-test") {
         const bool brand=nougat_media_suite_icon::kTopBarWidth>180 && nougat_media_suite_icon::kTopBarHeight==40 && nougat_media_suite_icon::kIcon64Size==64;
         const bool authority=exists_file(exe_dir()+"/assets/ui/NOUGAT_MEDIA_PLUS_UI_AUTHORITY.png");
-        if (!brand || !authority) { std::fprintf(stderr,"Nougat Media Plus v0.0.68 UI self-test FAIL.\n"); return 1; }
-        std::printf("Nougat Media Plus v0.0.68 UI self-test PASS: new lockup/icon data and UI authority are active; UI audio is disabled.\n");
+        if (!brand || !authority) { std::fprintf(stderr,"DK Media Plus v0.0.69 UI self-test FAIL.\n"); return 1; }
+        std::printf("DK Media Plus v0.0.69 UI self-test PASS: new lockup/icon data and UI authority are active; UI audio is disabled.\n");
         return 0;
     }
 
-    prctl(PR_SET_NAME, "NougatMediaPlus", 0, 0, 0);
+    prctl(PR_SET_NAME, "DKMediaPlus", 0, 0, 0);
     if (argc > 1 && std::string(argv[1]) == "--version") {
-        printf("Nougat Media Plus v0.0.68\n");
+        printf("DK Media Plus v0.0.69\n");
         return 0;
     }
     if (argc > 1 && std::string(argv[1]) == "--v49-games-self-test") {
@@ -19621,7 +19621,7 @@ int main(int argc, char** argv) {
         }
         if (!mario || !adventure || !river || !japan_only || preferred.size() != 4U || filtered != 4U) {
             std::fprintf(stderr,
-                "Nougat v0.0.49 Games preference self-test FAIL. mario=%d english=%d final=%d foreign-only=%d visible=%zu filtered=%zu\\n",
+                "DK Media Plus v0.0.49 Games preference self-test FAIL. mario=%d english=%d final=%d foreign-only=%d visible=%zu filtered=%zu\\n",
                 mario, adventure, river, japan_only, preferred.size(), filtered);
             return 1;
         }
@@ -19645,17 +19645,17 @@ int main(int argc, char** argv) {
             "/tmp/gta1.zip", gta_zip) == "Original_DOS/gtados.bat";
         if (!sega_bin || !sega_gen || !sega_sms || !sega_gg || !zip_safe || !dos_prince || !dos_gta) {
             std::fprintf(stderr,
-                "Nougat v0.0.49 ZIP/Sega/DOS self-test FAIL. sega=%d/%d/%d/%d zip=%d dos=%d/%d\n",
+                "DK Media Plus v0.0.49 ZIP/Sega/DOS self-test FAIL. sega=%d/%d/%d/%d zip=%d dos=%d/%d\n",
                 sega_bin, sega_gen, sega_sms, sega_gg, zip_safe, dos_prince, dos_gta);
             return 1;
         }
-        std::printf("Nougat Media Plus v0.0.49 Games PASS: USA/English/revision filtering, Sega ZIP recognition, and DOS ZIP package detection.\n");
+        std::printf("DK Media Plus v0.0.49 Games PASS: USA/English/revision filtering, Sega ZIP recognition, and DOS ZIP package detection.\n");
         return 0;
     }
     if (argc > 1 && std::string(argv[1]) == "--v47-fullscreen-controls-self-test") {
         App app;
         app.d=XOpenDisplay(nullptr);
-        if(!app.d){ std::fprintf(stderr,"Nougat v0.0.47 fullscreen controls FAIL: X display unavailable.\n"); return 1; }
+        if(!app.d){ std::fprintf(stderr,"DK Media Plus v0.0.47 fullscreen controls FAIL: X display unavailable.\n"); return 1; }
         app.screen=DefaultScreen(app.d);
         app.W=800; app.H=500; app.videoW=800; app.videoH=500;
         app.win=XCreateSimpleWindow(app.d,RootWindow(app.d,app.screen),0,0,800,500,0,
@@ -19688,10 +19688,10 @@ int main(int argc, char** argv) {
         app.d=nullptr;
         app.win=0;
         if(!(mapped&&geometry)){
-            std::fprintf(stderr,"Nougat v0.0.47 fullscreen controls FAIL: mapped=%d geometry=%d\n",mapped?1:0,geometry?1:0);
+            std::fprintf(stderr,"DK Media Plus v0.0.47 fullscreen controls FAIL: mapped=%d geometry=%d\n",mapped?1:0,geometry?1:0);
             return 1;
         }
-        std::printf("Nougat v0.0.55 fullscreen controls PASS: sheet-square [<<] [<] [^] [>] [>>] overlay mapped with drawn transport glyphs.\n");
+        std::printf("DK Media Plus v0.0.55 fullscreen controls PASS: sheet-square [<<] [<] [^] [>] [>>] overlay mapped with drawn transport glyphs.\n");
         return 0;
     }
     if (argc > 1 && std::string(argv[1]) == "--v47-nav-self-test") {
@@ -19709,17 +19709,17 @@ int main(int argc, char** argv) {
                       app.debugTab.x+app.debugTab.w<=app.topNavClipRight;
         }
         if (!visible) {
-            std::fprintf(stderr,"Nougat v0.0.47 top navigation FAIL: final System tab remains clipped.\n");
+            std::fprintf(stderr,"DK Media Plus v0.0.47 top navigation FAIL: final System tab remains clipped.\n");
             return 1;
         }
-        std::printf("Nougat v0.0.47 top navigation PASS: System tab fully reachable.\n");
+        std::printf("DK Media Plus v0.0.47 top navigation PASS: System tab fully reachable.\n");
         return 0;
     }
     if (argc > 1 && std::string(argv[1]) == "--v47-window-identity-self-test") {
         App app;
         app.d=XOpenDisplay(nullptr);
         if (!app.d) {
-            std::fprintf(stderr,"Nougat v0.0.47 window identity FAIL: X display unavailable.\n");
+            std::fprintf(stderr,"DK Media Plus v0.0.47 window identity FAIL: X display unavailable.\n");
             return 1;
         }
         app.screen=DefaultScreen(app.d);
@@ -19730,7 +19730,7 @@ int main(int argc, char** argv) {
         XSync(app.d,False);
         XClassHint hint{};
         const bool classOk=XGetClassHint(app.d,app.win,&hint)!=0 && hint.res_class &&
-                           std::string(hint.res_class)=="NougatMediaPlus";
+                           std::string(hint.res_class)=="DKMediaPlus";
         if (hint.res_name) XFree(hint.res_name);
         if (hint.res_class) XFree(hint.res_class);
         auto prop=[&app](const char* name) {
@@ -19755,19 +19755,19 @@ int main(int argc, char** argv) {
                                              &actual,&fmt,&items,&after,&iconData)==Success &&
                           iconData && fmt==32 && items>=3;
         if (iconData) XFree(iconData);
-        const bool gtkOk=prop("_GTK_APPLICATION_ID")=="com.elderredsoftworks.NougatMediaPlus";
+        const bool gtkOk=prop("_GTK_APPLICATION_ID")=="com.dksoftworks.DKMediaPlus";
         const std::string bamf=prop("_BAMF_DESKTOP_FILE");
-        const bool bamfOk=bamf.find("com.elderredsoftworks.NougatMediaPlus.desktop")!=std::string::npos;
+        const bool bamfOk=bamf.find("com.dksoftworks.DKMediaPlus.desktop")!=std::string::npos;
         XDestroyWindow(app.d,app.win);
         XCloseDisplay(app.d);
         app.d=nullptr;
         app.win=0;
         if (!(classOk && gtkOk && bamfOk && iconOk)) {
-            std::fprintf(stderr,"Nougat v0.0.47 window identity FAIL: class=%d gtk=%d bamf=%d icon=%d\n",
+            std::fprintf(stderr,"DK Media Plus v0.0.47 window identity FAIL: class=%d gtk=%d bamf=%d icon=%d\n",
                          classOk?1:0,gtkOk?1:0,bamfOk?1:0,iconOk?1:0);
             return 1;
         }
-        std::printf("Nougat v0.0.47 window identity PASS: GNOME/X11 app identity and N icon properties present.\n");
+        std::printf("DK Media Plus v0.0.47 window identity PASS: GNOME/X11 app identity and N icon properties present.\n");
         return 0;
     }
     if (argc > 1 && std::string(argv[1]) == "--v44-release-self-test") {
@@ -19800,10 +19800,10 @@ int main(int argc, char** argv) {
             !safe_zip_game_entry("/probe.nes") &&
             !safe_zip_game_entry("folder/readme.txt");
         if (grid_ok && games_layout_ok && world_tv_ok && formats_ok && zip_ok) {
-            printf("Nougat Media Plus v0.0.47 release self-test PASS\n");
+            printf("DK Media Plus v0.0.47 release self-test PASS\n");
             return 0;
         }
-        fprintf(stderr, "Nougat Media Plus v0.0.47 release self-test FAIL: grid=%d formats=%d zip=%d\n",
+        fprintf(stderr, "DK Media Plus v0.0.47 release self-test FAIL: grid=%d formats=%d zip=%d\n",
                 grid_ok ? 1 : 0, formats_ok ? 1 : 0, zip_ok ? 1 : 0);
         return 1;
     }
@@ -19822,7 +19822,7 @@ int main(int argc, char** argv) {
             unsigned char r=0,g=0,b=0; unsigned blend=0;
             app.quilt_tint_for(ViewMode::Stream,r,g,b,blend,item.platform);
             if (r!=item.r || g!=item.g || b!=item.b || blend!=item.blend) {
-                std::fprintf(stderr,"Nougat v0.0.25 Stream provider tint FAIL.\n");
+                std::fprintf(stderr,"DK Media Plus v0.0.25 Stream provider tint FAIL.\n");
                 return 1;
             }
         }
@@ -19836,17 +19836,17 @@ int main(int argc, char** argv) {
             app.discover_mode_selected(reddmedia::RecommendationMode::Usual) ||
             app.discover_target_selected(reddmedia::RecommendationSource::External,
                                          reddmedia::RecommendationMediaType::Movie)) {
-            std::fprintf(stderr,"Nougat v0.0.25 Discover dual-selection state FAIL.\n");
+            std::fprintf(stderr,"DK Media Plus v0.0.25 Discover dual-selection state FAIL.\n");
             return 1;
         }
-        std::printf("Nougat Media Plus v0.0.29 UI state PASS: provider quilts and dual Discover selectors.\n");
+        std::printf("DK Media Plus v0.0.29 UI state PASS: provider quilts and dual Discover selectors.\n");
         return 0;
     }
     if (argc > 1 && std::string(argv[1]) == "--v28-ui-state-self-test") {
         App app;
         if (App::home_grid_columns_for_width(650) < 3 ||
             App::home_grid_columns_for_width(430) < 2) {
-            std::fprintf(stderr, "Nougat v0.0.28 responsive Home grid FAIL.\n");
+            std::fprintf(stderr, "DK Media Plus v0.0.28 responsive Home grid FAIL.\n");
             return 1;
         }
         reddmedia::LibraryPoster good;
@@ -19857,13 +19857,13 @@ int main(int argc, char** argv) {
         landscape.width = 640; landscape.height = 360; landscape.rgb.push_back(0);
         if (!App::poster_quality_ok(good) || App::poster_quality_ok(tiny) ||
             App::poster_quality_ok(landscape)) {
-            std::fprintf(stderr, "Nougat v0.0.28 poster quality gate FAIL.\n");
+            std::fprintf(stderr, "DK Media Plus v0.0.28 poster quality gate FAIL.\n");
             return 1;
         }
         const std::string metadata = App::x11_safe_text("2012 \xE2\x80\xA2 Comedy \xE2\x80\xA2 Romance");
         if (metadata.find("\xE2\x80\xA2") != std::string::npos ||
             metadata.find(static_cast<char>(0xB7)) == std::string::npos) {
-            std::fprintf(stderr, "Nougat v0.0.28 metadata encoding repair FAIL.\n");
+            std::fprintf(stderr, "DK Media Plus v0.0.28 metadata encoding repair FAIL.\n");
             return 1;
         }
         struct PageTint { ViewMode view; unsigned char r,g,b; unsigned blend; };
@@ -19879,11 +19879,11 @@ int main(int argc, char** argv) {
             unsigned char r=0,g=0,b=0; unsigned blend=0;
             app.quilt_tint_for(item.view,r,g,b,blend);
             if (r!=item.r || g!=item.g || b!=item.b || blend!=item.blend) {
-                std::fprintf(stderr, "Nougat v0.0.28 page palette FAIL.\n");
+                std::fprintf(stderr, "DK Media Plus v0.0.28 page palette FAIL.\n");
                 return 1;
             }
         }
-        std::printf("Nougat Media Plus v0.0.28 UI/artwork state PASS: palette, responsive grid, poster gate, metadata encoding.\n");
+        std::printf("DK Media Plus v0.0.28 UI/artwork state PASS: palette, responsive grid, poster gate, metadata encoding.\n");
         return 0;
     }
     if (argc > 3 && std::string(argv[1]) == "--discover-local-resolver-self-test") {
@@ -19901,7 +19901,7 @@ int main(int argc, char** argv) {
             watched.media_type = reddmedia::RecommendationMediaType::Television;
             std::string history_error;
             if (!app.recommendationEngine->record_started(watched,history_error)) {
-                std::fprintf(stderr,"Nougat Media Plus Discover resolver history setup FAIL: %s\n",history_error.c_str());
+                std::fprintf(stderr,"DK Media Plus Discover resolver history setup FAIL: %s\n",history_error.c_str());
                 return 1;
             }
         }
@@ -19909,10 +19909,10 @@ int main(int argc, char** argv) {
         std::string error;
         if (!app.resolve_discover_local_play_target(result,playable,error) ||
             playable.kind != reddmedia::LibraryNodeKind::Episode || playable.path != argv[3]) {
-            std::fprintf(stderr,"Nougat Media Plus Discover local-play resolver FAIL: %s\n",error.c_str());
+            std::fprintf(stderr,"DK Media Plus Discover local-play resolver FAIL: %s\n",error.c_str());
             return 1;
         }
-        std::printf("Nougat Media Plus Discover local-play resolver PASS: %s\n",playable.path.c_str());
+        std::printf("DK Media Plus Discover local-play resolver PASS: %s\n",playable.path.c_str());
         return 0;
     }
     if (argc > 1 && std::string(argv[1]) == "--v29-tv-reliability-self-test") {
@@ -19981,11 +19981,11 @@ int main(int argc, char** argv) {
         unlink(n2.c_str()); unlink(n10.c_str());
         rmdir(natural_dir.c_str()); rmdir(season_dir.c_str()); rmdir(series_dir.c_str()); rmdir(base.c_str());
         if (!parse_ok || !order_ok || !series_ok || !overlay_ok || !natural_ok || !vimeo_ok || !art_ok) {
-            std::fprintf(stderr, "Nougat v0.0.29 TV/UI reliability self-test FAIL. parse=%d order=%d series=%d overlay=%d natural=%d vimeo=%d art=%d\n",
+            std::fprintf(stderr, "DK Media Plus v0.0.29 TV/UI reliability self-test FAIL. parse=%d order=%d series=%d overlay=%d natural=%d vimeo=%d art=%d\n",
                          parse_ok, order_ok, series_ok, overlay_ok, natural_ok, vimeo_ok, art_ok);
             return 1;
         }
-        std::printf("Nougat Media Plus v0.0.29 TV/UI reliability PASS: same-folder Up Next, 10-second overlay, natural fallback, Vimeo, and Home artwork.\n");
+        std::printf("DK Media Plus v0.0.29 TV/UI reliability PASS: same-folder Up Next, 10-second overlay, natural fallback, Vimeo, and Home artwork.\n");
         return 0;
     }
     if (argc > 1 && std::string(argv[1]) == "--v30-ui-library-player-self-test") {
@@ -20062,11 +20062,11 @@ int main(int argc, char** argv) {
 
         if (!grid_ok || !home_ratio_ok || !nav_middle_ok || !nav_first_ok || !nav_last_ok || !cache_ok) {
             std::fprintf(stderr,
-                "Nougat v0.0.30 UI/Library/Player self-test FAIL. grid=%d home=%d nav=%d/%d/%d cache=%d\n",
+                "DK Media Plus v0.0.30 UI/Library/Player self-test FAIL. grid=%d home=%d nav=%d/%d/%d cache=%d\n",
                 grid_ok, home_ratio_ok, nav_middle_ok, nav_first_ok, nav_last_ok, cache_ok);
             return 1;
         }
-        std::printf("Nougat Media Plus v0.0.30 UI/Library/Player PASS: multi-row DVD grid, portrait Home posters, persistent cache, Previous/Next, and volume/panel polish contract.\n");
+        std::printf("DK Media Plus v0.0.30 UI/Library/Player PASS: multi-row DVD grid, portrait Home posters, persistent cache, Previous/Next, and volume/panel polish contract.\n");
         return 0;
     }
     if (argc > 1 && std::string(argv[1]) == "--v31-ui-sheet-self-test") {
@@ -20086,11 +20086,11 @@ int main(int argc, char** argv) {
         const bool icon_ok = tiny.w == 32 && tiny.h == App::kCompactButtonH;
         if (!palette_ok || !geometry_ok || !state_ok || !icon_ok) {
             std::fprintf(stderr,
-                "Nougat v0.0.31 exact UI-sheet component self-test FAIL. palette=%d geometry=%d state=%d icon=%d\n",
+                "DK Media Plus v0.0.31 exact UI-sheet component self-test FAIL. palette=%d geometry=%d state=%d icon=%d\n",
                 palette_ok, geometry_ok, state_ok, icon_ok);
             return 1;
         }
-        std::printf("Nougat Media Plus v0.0.31 exact UI-sheet component PASS: page palettes retained; sheet buttons, tabs, fields, panels, tracks, knobs and checkboxes active.\n");
+        std::printf("DK Media Plus v0.0.31 exact UI-sheet component PASS: page palettes retained; sheet buttons, tabs, fields, panels, tracks, knobs and checkboxes active.\n");
         return 0;
     }
     if (argc > 1 && std::string(argv[1]) == "--embedding-model-test") {
@@ -20098,12 +20098,12 @@ int main(int argc, char** argv) {
             exe_dir() + "/components/ai/models/nomic-embed-text-v1.5-Q4_K_M.gguf");
         std::vector<float> embedding;
         std::string error;
-        if (!engine.embed_document("Nougat Media Plus offline embedding validation", embedding, error) ||
+        if (!engine.embed_document("DK Media Plus offline embedding validation", embedding, error) ||
             embedding.empty()) {
-            std::fprintf(stderr, "Nougat Media Plus embedding model FAIL: %s\n", error.c_str());
+            std::fprintf(stderr, "DK Media Plus embedding model FAIL: %s\n", error.c_str());
             return 1;
         }
-        std::printf("Nougat Media Plus embedding model PASS: %zu dimensions%s.\n",
+        std::printf("DK Media Plus embedding model PASS: %zu dimensions%s.\n",
                     embedding.size(), engine.using_real_model() ? " (llama.cpp)" : " (test stub)");
         return 0;
     }
@@ -20126,7 +20126,7 @@ int main(int argc, char** argv) {
         std::string error;
         if (!engine.record_started(watched_movie, error) ||
             !engine.record_started(watched_tv, error)) {
-            std::fprintf(stderr, "Nougat Media Plus Discover AI FAIL: %s\n", error.c_str());
+            std::fprintf(stderr, "DK Media Plus Discover AI FAIL: %s\n", error.c_str());
             unlink(history_path.c_str());
             return 1;
         }
@@ -20152,14 +20152,14 @@ int main(int argc, char** argv) {
                 request.mode = mode;
                 reddmedia::RecommendationResult result;
                 if (!engine.recommend(request, local_items, result, error) || result.item.id.empty()) {
-                    std::fprintf(stderr, "Nougat Media Plus Discover AI FAIL: %s\n", error.c_str());
+                    std::fprintf(stderr, "DK Media Plus Discover AI FAIL: %s\n", error.c_str());
                     unlink(history_path.c_str());
                     return 1;
                 }
             }
         }
         unlink(history_path.c_str());
-        std::printf("Nougat Media Plus Discover AI PASS: Local Usual/Random Movie/TV.\n");
+        std::printf("DK Media Plus Discover AI PASS: Local Usual/Random Movie/TV.\n");
         return 0;
     }
     if (argc > 1 &&
@@ -20177,21 +20177,21 @@ int main(int argc, char** argv) {
             usleep(200000);
         }
         if (!ready) {
-            std::fprintf(stderr, "Nougat Media Plus integrated server lifecycle FAIL: startup timeout.\n");
+            std::fprintf(stderr, "DK Media Plus integrated server lifecycle FAIL: startup timeout.\n");
             server.stop();
             return 1;
         }
         if (std::string(argv[1]) == "--media-server-parent-death-hold") {
-            std::printf("Nougat Media Plus integrated server parent-death test READY.\n");
+            std::printf("DK Media Plus integrated server parent-death test READY.\n");
             std::fflush(stdout);
             while (true) pause();
         }
         server.stop();
         if (server.state() != reddmedia::MediaServerState::Stopped || server.probe_health() || server.owns_server()) {
-            std::fprintf(stderr, "Nougat Media Plus integrated server lifecycle FAIL: owned process tree or port 8096 survived explicit stop.\n");
+            std::fprintf(stderr, "DK Media Plus integrated server lifecycle FAIL: owned process tree or port 8096 survived explicit stop.\n");
             return 1;
         }
-        std::printf("Nougat Media Plus integrated server graceful shutdown PASS: owned process tree stopped and port 8096 released.\n");
+        std::printf("DK Media Plus integrated server graceful shutdown PASS: owned process tree stopped and port 8096 released.\n");
         return 0;
     }
     if (argc > 1 && std::string(argv[1]) == "--v32-p2p-player-repair-self-test") {
@@ -20208,11 +20208,11 @@ int main(int argc, char** argv) {
             knobD == 26;
         const bool p2p_controls = app.p2pRemoveBtn.w > 0 && app.p2pPlayBtn.w > 0 && app.p2pStopResumeBtn.w > 0;
         if (!search_palette || !volume_geometry || !p2p_controls) {
-            std::fprintf(stderr,"Nougat v0.0.32 P2P/player repair self-test FAIL. search=%d volume=%d p2p=%d\n",
+            std::fprintf(stderr,"DK Media Plus v0.0.32 P2P/player repair self-test FAIL. search=%d volume=%d p2p=%d\n",
                          search_palette?1:0, volume_geometry?1:0, p2p_controls?1:0);
             return 1;
         }
-        std::printf("Nougat Media Plus v0.0.32 P2P/player repair PASS: Search seam contrast, seek-style volume geometry, Home fixed-header clipping/scrollbar contract, P2P controls and streaming scheduler contract active.\n");
+        std::printf("DK Media Plus v0.0.32 P2P/player repair PASS: Search seam contrast, seek-style volume geometry, Home fixed-header clipping/scrollbar contract, P2P controls and streaming scheduler contract active.\n");
         return 0;
     }
 
@@ -20239,17 +20239,17 @@ int main(int argc, char** argv) {
             app.p2p.plus_settings().seed_ratio_limit == 1.5 &&
             app.p2p.plus_settings().seed_time_limit_minutes == 120;
         if (!navOrder || !navClip || !frames || !libraryContainment || !liveTvLayout || !plus) {
-            std::fprintf(stderr, "Nougat v0.0.34 integration self-test FAIL. nav=%d clip=%d frames=%d library=%d live=%d p2p=%d\n",
+            std::fprintf(stderr, "DK Media Plus v0.0.34 integration self-test FAIL. nav=%d clip=%d frames=%d library=%d live=%d p2p=%d\n",
                          navOrder?1:0, navClip?1:0, frames?1:0, libraryContainment?1:0, liveTvLayout?1:0, plus?1:0);
             return 1;
         }
         std::string tunerStatus;
         (void)app.tunerBackend.detect(tunerStatus);
         if (tunerStatus.empty()) {
-            std::fprintf(stderr, "Nougat v0.0.34 tuner discovery self-test FAIL.\n");
+            std::fprintf(stderr, "DK Media Plus v0.0.34 tuner discovery self-test FAIL.\n");
             return 1;
         }
-        std::printf("Nougat Media Plus v0.0.34 integration PASS: clipped page/nav viewports, Library containment, P2P Plus controls, persistent-server architecture and Live TV discovery scaffold active.\n");
+        std::printf("DK Media Plus v0.0.34 integration PASS: clipped page/nav viewports, Library containment, P2P Plus controls, persistent-server architecture and Live TV discovery scaffold active.\n");
         return 0;
     }
 
@@ -20281,11 +20281,11 @@ int main(int argc, char** argv) {
             app.page_uses_connected_square_frame(ViewMode::Debug) &&
             !app.page_uses_connected_square_frame(ViewMode::VideoPlayer);
         if (!navLeft || !navRightPreserved || !topTabs || !sheetPlayerControls || !liveHeaderClear || !discoverLive || !homeGeometry || !frames) {
-            std::fprintf(stderr,"Nougat v0.0.34 UI polish self-test FAIL. navL=%d navR=%d tabs=%d player=%d live=%d discover=%d home=%d frames=%d\n",
+            std::fprintf(stderr,"DK Media Plus v0.0.34 UI polish self-test FAIL. navL=%d navR=%d tabs=%d player=%d live=%d discover=%d home=%d frames=%d\n",
                 navLeft?1:0,navRightPreserved?1:0,topTabs?1:0,sheetPlayerControls?1:0,liveHeaderClear?1:0,discoverLive?1:0,homeGeometry?1:0,frames?1:0);
             return 1;
         }
-        std::printf("Nougat Media Plus v0.0.34 UI polish PASS: actual-sheet top tabs/seek/volume, left-shifted nav, direct scroll dragging, connected affected-page corners, Live TV header spacing, Discover Live TV/TMDb labels, and fixed Home card geometry active.\n");
+        std::printf("DK Media Plus v0.0.34 UI polish PASS: actual-sheet top tabs/seek/volume, left-shifted nav, direct scroll dragging, connected affected-page corners, Live TV header spacing, Discover Live TV/TMDb labels, and fixed Home card geometry active.\n");
         return 0;
     }
 
@@ -20334,13 +20334,13 @@ int main(int argc, char** argv) {
             !debugScrollReach || !playerScrollReach || !librarySingleRowReach || !systemServerControls || !activePointerScale ||
             !studioPalette || !playerControlsCentered || !scanGuard) {
             std::fprintf(stderr,
-                "Nougat v0.0.35 cleanup self-test FAIL. studio=%d search=%d rows=%d libview=%d player=%d debug=%d pscroll=%d librow=%d pointer=%d palette=%d centered=%d scan=%d\n",
+                "DK Media Plus v0.0.35 cleanup self-test FAIL. studio=%d search=%d rows=%d libview=%d player=%d debug=%d pscroll=%d librow=%d pointer=%d palette=%d centered=%d scan=%d\n",
                 studioOrder?1:0, squareSearch?1:0, alignedRows?1:0, libraryViewsRight?1:0, playerSheet?1:0,
                 debugScrollReach?1:0, playerScrollReach?1:0, librarySingleRowReach?1:0, activePointerScale?1:0,
                 studioPalette?1:0, playerControlsCentered?1:0, scanGuard?1:0);
             return 1;
         }
-        std::printf("Nougat Media Plus v0.0.35 cleanup PASS: app-wide top-row alignment, centered full-width player controls, one-row Library scrolling, exact-sheet VOLUME sprite geometry, full Debug/player action scrolling, enlarged active-tab pointer, Gold Studio identity, and native ATSC scan guard active.\n");
+        std::printf("DK Media Plus v0.0.35 cleanup PASS: app-wide top-row alignment, centered full-width player controls, one-row Library scrolling, exact-sheet VOLUME sprite geometry, full Debug/player action scrolling, enlarged active-tab pointer, Gold Studio identity, and native ATSC scan guard active.\n");
         return 0;
     }
 
@@ -20374,12 +20374,12 @@ int main(int argc, char** argv) {
         const bool searchFilter = filtered.size() == 1 && filtered[0] == 0;
         if (!searchBelowButtons || !viewPairStillRight || !seekNative || !playerStack || !headerStatus || !searchFilter) {
             std::fprintf(stderr,
-                "Nougat v0.0.36 Library/UI/player self-test FAIL. searchrow=%d viewright=%d seek=%d stack=%d status=%d filter=%d\n",
+                "DK Media Plus v0.0.36 Library/UI/player self-test FAIL. searchrow=%d viewright=%d seek=%d stack=%d status=%d filter=%d\n",
                 searchBelowButtons?1:0, viewPairStillRight?1:0, seekNative?1:0, playerStack?1:0,
                 headerStatus?1:0, searchFilter?1:0);
             return 1;
         }
-        std::printf("Nougat Media Plus v0.0.36 PASS: Library Search row/filter, collection-ready navigation geometry, exact-sheet seek sprite geometry with side times, stable player stack, and sheet-style server status geometry active.\n");
+        std::printf("DK Media Plus v0.0.36 PASS: Library Search row/filter, collection-ready navigation geometry, exact-sheet seek sprite geometry with side times, stable player stack, and sheet-style server status geometry active.\n");
         return 0;
     }
 
@@ -20429,12 +20429,12 @@ int main(int argc, char** argv) {
             guideReload[0].title=="Guide Test" && guideReload[0].duration_seconds==1800 && guideReload[0].event_id==77;
         if (!systemName || !systemServer || !homeSame || !seekWide || !statusButton || !liveButtons || !liveInput || !guideModel ||
             !librarySearchButton || !librarySearchWorks || !guideCache) {
-            std::fprintf(stderr,"Nougat v0.0.37 self-test FAIL. system=%d server=%d home=%d seek=%d status=%d livebuttons=%d input=%d guide=%d searchbtn=%d search=%d cache=%d\n",
+            std::fprintf(stderr,"DK Media Plus v0.0.37 self-test FAIL. system=%d server=%d home=%d seek=%d status=%d livebuttons=%d input=%d guide=%d searchbtn=%d search=%d cache=%d\n",
                 systemName?1:0,systemServer?1:0,homeSame?1:0,seekWide?1:0,statusButton?1:0,liveButtons?1:0,liveInput?1:0,guideModel?1:0,
                 librarySearchButton?1:0,librarySearchWorks?1:0,guideCache?1:0);
             return 1;
         }
-        std::printf("Nougat Media Plus v0.0.37 PASS: System controls, working Library Search+button, full-size Continue Watching, wide exact-sheet seek, stitched Server state, logical Live TV controls, native ATSC Watch Live input, and persisted guide model active.\n");
+        std::printf("DK Media Plus v0.0.37 PASS: System controls, working Library Search+button, full-size Continue Watching, wide exact-sheet seek, stitched Server state, logical Live TV controls, native ATSC Watch Live input, and persisted guide model active.\n");
         return 0;
     }
 
@@ -20502,18 +20502,18 @@ int main(int argc, char** argv) {
         if (!volumeGeometry || !progressSheet || !liveGuideDefault || !tunerAdminInLiveTv || !networkLogos || !titleWrap || !activityDefault ||
             !liveProgram || !lastChannel || !liveTvTransportNav || !liveTvTransportBounds) {
             std::fprintf(stderr,
-                "Nougat v0.0.38 self-test FAIL. volume=%d progress=%d guide=%d tuneradmin=%d logos=%d wrap=%d activity=%d program=%d last=%d livetvnav=%d bounds=%d\n",
+                "DK Media Plus v0.0.38 self-test FAIL. volume=%d progress=%d guide=%d tuneradmin=%d logos=%d wrap=%d activity=%d program=%d last=%d livetvnav=%d bounds=%d\n",
                 volumeGeometry?1:0,progressSheet?1:0,liveGuideDefault?1:0,tunerAdminInLiveTv?1:0,networkLogos?1:0,titleWrap?1:0,activityDefault?1:0,
                 liveProgram?1:0,lastChannel?1:0,liveTvTransportNav?1:0,liveTvTransportBounds?1:0);
             return 1;
         }
-        std::printf("Nougat Media Plus v0.0.38 PASS: exact-sheet player/progress geometry, Guide-default Live TV, Live TV tuner administration, real network-logo mapping, remembered channel, Live TV Previous/Next channel navigation, Library title wrapping, unified player activity state, and Live TV program identity active.\n");
+        std::printf("DK Media Plus v0.0.38 PASS: exact-sheet player/progress geometry, Guide-default Live TV, Live TV tuner administration, real network-logo mapping, remembered channel, Live TV Previous/Next channel navigation, Library title wrapping, unified player activity state, and Live TV program identity active.\n");
         return 0;
     }
 
     if (argc > 1 && std::string(argv[1]) == "--v39-diagnostics-live-tv-self-test") {
         reddmedia::DiagnosticInput input;
-        input.app_version = "Nougat Media Plus v0.0.41";
+        input.app_version = "DK Media Plus v0.0.41";
         input.executable_path = argv[0];
         input.project_root = "/tmp";
         input.current_view = "Debug";
@@ -20584,11 +20584,11 @@ int main(int argc, char** argv) {
         const bool saneOverall = report.overall != reddmedia::DiagnosticSeverity::Problem;
         if (!metadataInfo || !searchIdle || !liveMux || !queuedInfo || !structured || !saneOverall) {
             std::fprintf(stderr,
-                "Nougat v0.0.40 diagnostic self-test FAIL. metadata=%d idle=%d livemux=%d queued=%d structured=%d overall=%d\n",
+                "DK Media Plus v0.0.40 diagnostic self-test FAIL. metadata=%d idle=%d livemux=%d queued=%d structured=%d overall=%d\n",
                 metadataInfo?1:0, searchIdle?1:0, liveMux?1:0, queuedInfo?1:0, structured?1:0, saneOverall?1:0);
             return 1;
         }
-        std::printf("Nougat Media Plus v0.0.41 PASS: subsystem diagnostics, sane severity, Search idle state, Live TV awareness, guide coverage, and current-multiplex harvesting active.\n");
+        std::printf("DK Media Plus v0.0.41 PASS: subsystem diagnostics, sane severity, Search idle state, Live TV awareness, guide coverage, and current-multiplex harvesting active.\n");
         return 0;
     }
 
@@ -20629,16 +20629,16 @@ int main(int argc, char** argv) {
             app.nougatArchivePanelTab.x+app.nougatArchivePanelTab.w<=app.W-28 &&
             app.nougatNetworkButtonsScrollX>0 && app.nougatPanelButtonsScrollX>0;
         if (!geometry || !hoverTransitions || !activityTimer || !imdb || !networkNarrow) {
-            std::printf("Nougat Media Plus v0.0.41 Library/IMDb repair FAIL\n");
+            std::printf("DK Media Plus v0.0.41 Library/IMDb repair FAIL\n");
             return 1;
         }
-        std::printf("Nougat Media Plus v0.0.41 Library/IMDb repair PASS: Movies+TV multi-row adaptive grid, card-hover clearing, three-second player activity, exact IMDb links, and narrow Network scrolling active\n");
+        std::printf("DK Media Plus v0.0.41 Library/IMDb repair PASS: Movies+TV multi-row adaptive grid, card-hover clearing, three-second player activity, exact IMDb links, and narrow Network scrolling active\n");
         return 0;
     }
 
     if (argc > 1 && std::string(argv[1]) == "--v39-diagnostic-self-test") {
         reddmedia::DiagnosticInput input;
-        input.app_version = "Nougat Media Plus v0.0.41";
+        input.app_version = "DK Media Plus v0.0.41";
         input.executable_path = resolved_executable_path();
         input.project_root = exe_dir();
         input.current_view = "System";
@@ -20656,17 +20656,17 @@ int main(int argc, char** argv) {
             if (issue.code.find("METADATA") != std::string::npos && issue.severity == reddmedia::DiagnosticSeverity::Information) metadata_info = true;
         }
         if (!search_idle || !metadata_info) {
-            std::fprintf(stderr, "Nougat v0.0.40 diagnostic self-test FAIL. search-idle=%d metadata-info=%d\n", search_idle?1:0, metadata_info?1:0);
+            std::fprintf(stderr, "DK Media Plus v0.0.40 diagnostic self-test FAIL. search-idle=%d metadata-info=%d\n", search_idle?1:0, metadata_info?1:0);
             return 1;
         }
-        std::printf("Nougat Media Plus v0.0.41 diagnostic self-test PASS: Search idle is Not Tested and optional metadata is Information.\n");
+        std::printf("DK Media Plus v0.0.41 diagnostic self-test PASS: Search idle is Not Tested and optional metadata is Information.\n");
         return 0;
     }
     if (argc > 1 && std::string(argv[1]) == "--v39-channel-logo-audit") {
         App app;
         const std::vector<reddmedia::LiveTvChannel> channels = app.tunerBackend.load_channels();
         if (channels.empty()) {
-            std::fprintf(stderr, "Nougat v0.0.40 channel-logo audit FAIL: no persisted Live TV channels were found.\n");
+            std::fprintf(stderr, "DK Media Plus v0.0.40 channel-logo audit FAIL: no persisted Live TV channels were found.\n");
             return 1;
         }
         int unresolved = 0;
@@ -20678,10 +20678,10 @@ int main(int argc, char** argv) {
             }
         }
         if (unresolved != 0) {
-            std::fprintf(stderr, "Nougat v0.0.40 channel-logo audit FAIL: %d/%zu channel(s) do not resolve to real artwork.\n", unresolved, channels.size());
+            std::fprintf(stderr, "DK Media Plus v0.0.40 channel-logo audit FAIL: %d/%zu channel(s) do not resolve to real artwork.\n", unresolved, channels.size());
             return 1;
         }
-        std::printf("Nougat Media Plus v0.0.41 channel-logo audit PASS: %zu/%zu persisted channels resolve to real artwork.\n", channels.size(), channels.size());
+        std::printf("DK Media Plus v0.0.41 channel-logo audit PASS: %zu/%zu persisted channels resolve to real artwork.\n", channels.size(), channels.size());
         return 0;
     }
     if (argc > 1 && std::string(argv[1]) == "--p2p-engine-info") {
@@ -20694,12 +20694,12 @@ int main(int argc, char** argv) {
         reddmedia::JellyfinApiClient client;
         std::string error;
         if (!client.initialize(error) || !client.add_media_folder(argv[2], error)) {
-            fprintf(stderr, "Nougat Media Plus native library API FAIL: %s\n", error.c_str());
+            fprintf(stderr, "DK Media Plus native library API FAIL: %s\n", error.c_str());
             return 1;
         }
         std::vector<reddmedia::LibraryVideo> videos;
         if (!client.wait_for_video_in_folder(argv[2], videos, error, 180)) {
-            fprintf(stderr, "Nougat Media Plus native library API FAIL: %s\n", error.c_str());
+            fprintf(stderr, "DK Media Plus native library API FAIL: %s\n", error.c_str());
             return 1;
         }
         bool found = false;
@@ -20710,10 +20710,10 @@ int main(int argc, char** argv) {
             }
         }
         if (!found) {
-            fprintf(stderr, "Nougat Media Plus native library API FAIL: indexed test video not found.\n");
+            fprintf(stderr, "DK Media Plus native library API FAIL: indexed test video not found.\n");
             return 1;
         }
-        printf("Nougat Media Plus native library API PASS: %zu video(s) cataloged for direct playback.\n", videos.size());
+        printf("DK Media Plus native library API PASS: %zu video(s) cataloged for direct playback.\n", videos.size());
         return 0;
     }
     if (!nougat_show_first_run_legal_notice()) return 0;

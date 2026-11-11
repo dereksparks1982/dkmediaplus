@@ -1,15 +1,16 @@
-# Nougat Media Suite Company Bible
+# DK Media Plus Company Bible
 
-**Status:** Canonical project operating law  
-**Scope:** Nougat Media Suite only  
+**Status:** Canonical project operating law
+**Current product name:** DK Media Plus, developed by DK Softworks. Internal legacy identifiers and historical references remain for binary/data compatibility.  
+**Scope:** DK Media Plus only  
 **Authority:** The owner has final authority over scope, acceptance, release state, and exceptions.  
 **Current studio brand:** DK Softworks, from Russian **ДК** = **Дом культуры** (*Dom kultury*), “House of Culture.” This is a brand attribution; the licensor and copyright provisions below are unchanged.
 
 ## 1. Purpose
 
-This is the one canonical project Bible for Nougat Media Suite. It defines how Nougat Media Suite is planned, changed, validated, packaged, explained, committed, published, and recovered. It must not contain rules, source, secrets, history, or identifying material from unrelated projects.
+This is the one canonical project Bible for DK Media Plus. It defines how DK Media Plus is planned, changed, validated, packaged, explained, committed, published, and recovered. It must not contain rules, source, secrets, history, or identifying material from unrelated projects.
 
-No second Nougat Media Suite Bible may be created. Amend this file in an owner-approved build when a durable Nougat Media Suite rule changes.
+No second DK Media Plus Bible may be created. Amend this file in an owner-approved build when a durable DK Media Plus rule changes.
 
 ## 2. Owner authority and stop law
 
@@ -33,7 +34,7 @@ No second Nougat Media Suite Bible may be created. Amend this file in an owner-a
 
 ## 3. Required reading order
 
-Before changing Nougat Media Suite, read:
+Before changing DK Media Plus, read:
 
 1. this Bible in full;
 2. the current roadmap;
@@ -46,7 +47,7 @@ The active Git commit, branch, worktree state, expected executable, rollback sna
 
 ## 3A. Mandatory Bible reading and README release law
 
-- Before every Nougat Media Plus build, repair, patch, validation, packaging operation, checkpoint closeout, acceptance closeout, local Git commit, release tag, or GitHub publication, the canonical `COMPANY_BIBLE.md` must be read in full. Memory, summaries, prior-chat recollection, and assumptions are not substitutes for reading the current file.
+- Before every DK Media Plus build, repair, patch, validation, packaging operation, checkpoint closeout, acceptance closeout, local Git commit, release tag, or GitHub publication, the canonical `COMPANY_BIBLE.md` must be read in full. Memory, summaries, prior-chat recollection, and assumptions are not substitutes for reading the current file.
 - The existing `README.md` introduction is persistent project documentation. It must remain intact unless the owner explicitly requests an introduction rewrite.
 - New owner-approved capabilities must be added to the existing README introduction using the smallest appropriate additions. Established introduction text must not be silently rewritten, condensed, reordered, or removed merely to document a new version.
 - Every accepted build, checkpoint closeout, or GitHub publication that changes current capabilities must update both the maintained `README.md` introduction and the newest version release notes. Adding only a version section does not satisfy the README requirement.
@@ -82,7 +83,7 @@ The active Git commit, branch, worktree state, expected executable, rollback sna
 
 ## 6. Source and privacy law
 
-- The repository contains Nougat Media Suite material and its own historical ReddMedia lineage only.
+- The repository contains DK Media Plus material and its own historical ReddMedia lineage only.
 - Do not place credentials, tokens, API keys, personal data, unrelated private-project material, generated runtime trees, caches, or build debris in Git.
 - Runtime state belongs under the user's standard config, data, and cache directories.
 - Credentials must be stored with owner-only permissions and must never be printed in logs, terminal commands, process arguments when avoidable, documentation, test output, commits, or packages.
@@ -98,11 +99,11 @@ The active Git commit, branch, worktree state, expected executable, rollback sna
 - No build may change `LICENSE`, `COPYRIGHT.md`, `CONTRIBUTING.md`, `THIRD_PARTY_NOTICES.md`, or `docs/LICENSING_POLICY.md` without explicit owner approval.
 - A release must run the current license-boundary regression test before handoff.
 
-## 7. Nougat Media Suite identity law
+## 7. DK Media Plus identity law
 
-The owner-approved rounded-square chocolate/caramel **N** emblem at the top center of `docs/design/NOUGAT_UI_COMPONENT_SHEET_APPROVED.png` is Nougat Media Suite's sole active icon source beginning with v0.0.21. The concept sheet itself is the authority. Do not redraw, regenerate, substitute, approximate, or replace the N with generic executable, gear, letter, or placeholder artwork.
+The owner-approved legacy rounded-square chocolate/caramel **N** emblem at the top center of `docs/design/NOUGAT_UI_COMPONENT_SHEET_APPROVED.png` is DK Media Plus's sole active icon source beginning with v0.0.21. The concept sheet itself is the authority. Do not redraw, regenerate, substitute, approximate, or replace the N with generic executable, gear, letter, or placeholder artwork.
 
-**NO EXCEPTIONS RELEASE GATE:** every Nougat Media Suite build, patch, repair, hotfix, and version bump must preserve and verify that exact approved N on every active application identity surface before the candidate may be handed to the owner. This requirement is permanent and is not optional even when the build scope is unrelated to artwork.
+**NO EXCEPTIONS RELEASE GATE:** every DK Media Plus build, patch, repair, hotfix, and version bump must preserve and verify that exact approved N on every active application identity surface before the candidate may be handed to the owner. This requirement is permanent and is not optional even when the build scope is unrelated to artwork.
 
 The mandatory identity surfaces are:
 - the raw versioned root executable as shown by Files/Nautilus;
@@ -121,10 +122,10 @@ The accepted red-tree artwork remains historical ReddMedia identity through v0.0
 
 ## 8. Media-server ownership law
 
-- Nougat Media Suite may start and supervise its integrated Jellyfin process.
+- DK Media Plus may start and supervise its integrated Jellyfin process.
 - After **Start Server**, a Nougat-owned server is intentionally independent of the desktop UI and must remain running across normal UI close or UI crash until **Stop Server** is explicitly used.
 - Reopening Nougat must validate and adopt only the recorded Nougat-owned server; stale PID metadata must never authorize killing an unrelated process.
-- A separately started Jellyfin process must not be claimed or killed by Nougat Media Suite.
+- A separately started Jellyfin process must not be claimed or killed by DK Media Plus.
 - Start Server, Stop Server, and Refresh Server controls must report their real state.
 - Stop Server records the explicit stopped preference. Nougat must not add operating-system boot autostart unless the owner separately approves it.
 - Server data, config, cache, logs, ownership metadata, and the bundled runtime remain separate from Git-tracked source.
@@ -142,7 +143,7 @@ The accepted red-tree artwork remains historical ReddMedia identity through v0.0
 - The owner must be able to Test, Save/Replace, and Clear the TMDb credential.
 - A 401 response must be explained clearly without exposing the credential.
 - Random recommendations do not use viewing history. Usual recommendations may use private local viewing history and local embeddings.
-- Nougat Media Suite must never invent a title to hide an API, catalog, model, or network failure.
+- DK Media Plus must never invent a title to hide an API, catalog, model, or network failure.
 - Watch availability uses the exact owner-selected region and the complete provider categories returned through TMDb's JustWatch data. ReddMedia must show attribution, freshness, and an explicit no-listing state; it must not infer availability or bypass a provider's official playback path.
 
 ## 10. Diagnostic truth law
@@ -173,7 +174,7 @@ The accepted red-tree artwork remains historical ReddMedia identity through v0.0
 
 The normal handoff is one changed-files-only ZIP containing exactly the files required to move the verified base to the candidate.
 
-**NO INSTALLERS:** Nougat Media Suite handoff packages must not contain, generate, or require an installer. The owner receives the changed files and the final runnable versioned root executable directly.
+**NO INSTALLERS:** DK Media Plus handoff packages must not contain, generate, or require an installer. The owner receives the changed files and the final runnable versioned root executable directly.
 
 The package must include:
 
@@ -199,8 +200,8 @@ The package must not include generated runtime directories, caches, temporary bu
 
 When the owner must run a command:
 
-- every Nougat Media Suite **repair, build, validation, package-apply, or acceptance-preflight** terminal block must begin with a safe runtime-shutdown stage before build or filesystem work begins;
-- that shutdown stage must stop any running Nougat Media Suite application process and the **verified Nougat-owned integrated Jellyfin** process, then verify both are down before continuing;
+- every DK Media Plus **repair, build, validation, package-apply, or acceptance-preflight** terminal block must begin with a safe runtime-shutdown stage before build or filesystem work begins;
+- that shutdown stage must stop any running DK Media Plus application process and the **verified Nougat-owned integrated Jellyfin** process, then verify both are down before continuing;
 - never kill Jellyfin blindly by process name. Use Nougat ownership/runtime evidence (including the recorded ownership file/runtime path where available). If Jellyfin ownership is ambiguous, print a clear STOP/FAIL message with the relevant PID/process information and leave the unknown process running for owner review;
 - if the owner explicitly instructs that an independently started Jellyfin instance should also be stopped, that broader shutdown is allowed for that operation;
 - terminal command blocks must contain commands only: never include the shell prompt (for example `user@host:~$`) or copied/expected terminal output as executable lines;
@@ -236,7 +237,7 @@ Large tracked assets must be explained when GitHub reports size warnings. New la
 
 ## 17. Acceptance checklist
 
-A Nougat Media Suite candidate is ready for owner testing only when:
+A DK Media Plus candidate is ready for owner testing only when:
 
 - the approved scope is complete;
 - builds and automated validation pass;
@@ -247,19 +248,19 @@ A Nougat Media Suite candidate is ready for owner testing only when:
 - persistent owned-server survival across UI exit and explicit Stop Server shutdown are proven;
 - Movie/TV separation is proven;
 - TMDb credential lifecycle and poster paths are proven;
-- the final raw executable has the approved Nougat Media Suite icon metadata assignment read back;
+- the final raw executable has the approved DK Media Plus icon metadata assignment read back;
 - the owner receives the final runnable versioned root executable with the exact approved Nougat N icon verified, plus one clearly explained package-apply command only when filesystem changes beyond replacing the executable are required, and the explicit remaining visual checks.
 
 Only the owner decides whether the candidate is accepted.
 
-## 18. Search inside Nougat Media Suite
+## 18. Search inside DK Media Plus
 
-1. The decentralized Nougat engine is the integrated **Search** subsystem inside Nougat Media Suite.
+1. The decentralized Nougat engine is the integrated **Search** subsystem inside DK Media Plus.
 2. Beginning with v0.0.33, the owner-approved top-level order is `Home | Video Player | Library | Discover | Live TV | Search | Stream | Debug`. Media/torrent P2P and Virus Scan remain under Search, not as top-level areas.
 3. Accepted behavior remains preserved when identity/palette work changes unless functionality is explicitly approved.
 4. Search uses the approved cocoa/chocolate/nougat-cream/caramel palette. Its ordinary internal sections are `Search | Crawler | P2P | Virus Scan`; decentralized peer/node administration is available only through a smaller Network/Advanced surface.
 5. Read-only Search output remains selectable/copyable with normal mouse selection, Ctrl+C, Ctrl+A, and right-click Copy/Select All.
-6. Nougat Media Suite owner-created code is distributed to recipients for noncommercial use under the project license; third-party components retain upstream licenses; the owner retains all rights not granted.
+6. DK Media Plus owner-created code is distributed to recipients for noncommercial use under the project license; third-party components retain upstream licenses; the owner retains all rights not granted.
 7. Active Search data remains under the backward-compatible existing user-data tree.
 
 ### v0.0.32 Security Analysis law
@@ -272,7 +273,7 @@ Only the owner decides whether the candidate is accepted.
 
 ### v0.0.21 identity and palette rules
 
-- Official visible application identity is **Nougat Media Suite**; historical ReddMedia identity ended with accepted v0.0.20.
+- Official visible application identity is **DK Media Plus**; historical ReddMedia identity ended with accepted v0.0.20.
 - Root executable: `Nougat_Media_Suite_v21`.
 - Former top-level Nougat tab label: **Search**.
 - Common suite chrome: chocolate/cocoa/cream/caramel with the approved N + play icon.
@@ -293,11 +294,11 @@ Only the owner decides whether the candidate is accepted.
 - Compact bottom controls center when width permits and remain wheel-scrollable when narrow.
 - Movies and TV independently persist Grid/List Library preferences.
 - Custom editable text fields show focus/caret state.
-- Default Play remains the native Nougat Media Suite player.
+- Default Play remains the native DK Media Plus player.
 
 ### v0.0.23 exact concept UI rules
 
-- The owner-uploaded Nougat Media Suite concept sheet is the canonical visual authority for the v0.0.23 UI treatment. Approximate alternate themes are not substitutes.
+- The owner-uploaded DK Media Plus concept sheet is the canonical visual authority for the v0.0.23 UI treatment. Approximate alternate themes are not substitutes.
 - The established top-level layout remains `Video Player | Library | Discover | Search | Stream | Debug`; styling may not reorder or replace those tabs without explicit owner approval.
 - The selected top-level tab uses the integrated downward point/notch shown in the concept sheet.
 - The established Video Player control order remains `Open | Rewind 10s | Play/Pause | Stop | Fast Forward 10s | Fullscreen`.

@@ -11,7 +11,7 @@
   if (!gate || !checkbox || !agree || !reject || !warning) {
     // Fail closed: without the notice controls, the viewer must not be usable.
     document.body.replaceChildren();
-    document.body.textContent = 'Nougat Media Plus cannot start: legal notice controls are unavailable.';
+    document.body.textContent = 'DK Media Plus cannot start: legal notice controls are unavailable.';
     return;
   }
 
@@ -47,7 +47,7 @@
     // Browsers usually prevent scripts from closing a user-opened tab.
     // Remove the UI and navigate away, leaving no app functionality accessible.
     document.body.replaceChildren();
-    document.body.textContent = 'Nougat Media Plus has closed. Acceptance of the Terms of Service is required to use this application.';
+    document.body.textContent = 'DK Media Plus has closed. Acceptance of the Terms of Service is required to use this application.';
     document.body.style.background = '#071713';
     document.body.style.color = '#f1f6ef';
     document.body.style.padding = '32px';

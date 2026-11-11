@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Nougat">
-  <title>Nougat Web Player</title>
+  <title>DK Media Web Player</title>
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" href="./nougat-icon.png">
   <link rel="apple-touch-icon" href="./nougat-icon.png">
@@ -18,13 +18,13 @@
 <body>
   <div id="nougatLegalGate" role="dialog" aria-modal="true" aria-labelledby="nougatLegalTitle" aria-describedby="nougatLegalDescription">
     <section class="nougat-legal-panel">
-      <h1 id="nougatLegalTitle">Nougat Media Plus: Terms of Service</h1>
-      <p id="nougatLegalDescription">Nougat Media Plus is general-purpose software for media, streaming, networking, and technical tools. You are responsible for material you access, download, transmit, stream, or share and for complying with applicable laws.</p>
+      <h1 id="nougatLegalTitle">DK Media Plus: Terms of Service</h1>
+      <p id="nougatLegalDescription">DK Media Plus is general-purpose software for media, streaming, networking, and technical tools. You are responsible for material you access, download, transmit, stream, or share and for complying with applicable laws.</p>
       <p>Use content, networks, and services only where you have the necessary rights or permission. Elderred Softworks LLC does not authorize illegal use and, to the extent permitted by law, disclaims responsibility for unlawful or unauthorized use by others.</p>
-      <p>Review the <a href="./LEGAL_NOTICE.md" target="_blank" rel="noopener noreferrer">full legal notice</a>, <a href="https://github.com/dereksparks1982/Nougat-Media-Plus/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">license</a>, and <a href="https://github.com/dereksparks1982/Nougat-Media-Plus/blob/main/THIRD_PARTY_NOTICES.md" target="_blank" rel="noopener noreferrer">third-party notices</a>. Existing licenses remain in force.</p>
+      <p>Review the <a href="./LEGAL_NOTICE.md" target="_blank" rel="noopener noreferrer">full legal notice</a>, <a href="https://github.com/dereksparks1982/dkmediaplus/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">license</a>, and <a href="https://github.com/dereksparks1982/dkmediaplus/blob/main/THIRD_PARTY_NOTICES.md" target="_blank" rel="noopener noreferrer">third-party notices</a>. Existing licenses remain in force.</p>
       <p class="nougat-legal-note">This notice appears once per browser profile for this notice version. It may return after a notice revision or local data reset.</p>
-      <label class="nougat-legal-check"><input id="nougatLegalConsent" type="checkbox"><span>I have read and understand this notice, and I agree to use Nougat Media Plus lawfully.</span></label>
-      <p id="nougatLegalRejectWarning" class="nougat-legal-warning" role="alert" hidden>You must accept the Terms of Service to use Nougat Media Plus. If you refuse again, the application will close.</p>
+      <label class="nougat-legal-check"><input id="nougatLegalConsent" type="checkbox"><span>I have read and understand this notice, and I agree to use DK Media Plus lawfully.</span></label>
+      <p id="nougatLegalRejectWarning" class="nougat-legal-warning" role="alert" hidden>You must accept the Terms of Service to use DK Media Plus. If you refuse again, the application will close.</p>
       <div class="nougat-legal-actions">
         <button type="button" id="nougatLegalReject" class="nougat-legal-reject">Reject Terms</button>
         <button type="button" id="nougatLegalAgree" disabled>I Understand &amp; Agree</button>
@@ -35,19 +35,19 @@
 
   <header class="topbar">
     <div>
-      <div class="eyebrow">NOUGAT MEDIA PLUS</div>
+      <div class="eyebrow">DK MEDIA PLUS</div>
       <h1>Web Player</h1>
     </div>
     <div class="lan-badge" id="healthBadge">Connecting…</div>
   </header>
 
   <main>
-    <section class="player-shell" aria-label="Nougat video player">
+    <section class="player-shell" aria-label="DK Media Plus video player">
       <div class="player-stage">
         <video id="player" controls playsinline preload="metadata"></video>
         <div class="empty-player" id="emptyPlayer">
-          <strong>Select something from your Nougat Library.</strong>
-          <span>Movies and TV stream from your Nougat server to this device.</span>
+          <strong>Select something from your DK Media Library.</strong>
+          <span>Movies and TV stream from your DK Media Plus server to this device.</span>
         </div>
       </div>
       <div class="now-playing">
@@ -61,10 +61,10 @@
       <p class="player-status" id="playerStatus" aria-live="polite">Ready.</p>
     </section>
 
-    <section class="library-shell" aria-label="Nougat Library">
+    <section class="library-shell" aria-label="DK Media Library">
       <div class="library-heading">
         <div>
-          <div class="eyebrow">NOUGAT LIBRARY</div>
+          <div class="eyebrow">DK MEDIA LIBRARY</div>
           <h2>Your media</h2>
         </div>
         <div class="library-actions">
@@ -73,13 +73,13 @@
           <button type="button" id="refreshButton">Refresh</button>
         </div>
       </div>
-      <p class="catalog-status" id="catalogStatus" aria-live="polite">Loading your Nougat Library…</p>
+      <p class="catalog-status" id="catalogStatus" aria-live="polite">Loading your DK Media Library…</p>
       <div class="library-grid" id="libraryGrid"></div>
     </section>
   </main>
 
   <footer>
-    Nougat Web Player · Phone and browser access · GitHub Pages front end · Media stays on your Nougat server
+    DK Media Web Player · Phone and browser access · GitHub Pages front end · Media stays on your DK Media Plus server
   </footer>
 
   <script src="./legal-notice.js"></script>

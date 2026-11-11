@@ -1,7 +1,7 @@
 {
-  "name": "Nougat Watch",
-  "short_name": "Nougat Watch",
-  "description": "Watch your Nougat movies and TV from a phone or browser.",
+  "name": "DK Watch",
+  "short_name": "DK Watch",
+  "description": "Watch your DK Media Plus movies and TV from a phone or browser.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

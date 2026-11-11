@@ -1,7 +1,7 @@
 {
-  "name": "Nougat Media Plus Web Player",
-  "short_name": "Nougat",
-  "description": "Phone and browser access to movies and TV from your Nougat Media Plus server.",
+  "name": "DK Media Plus Web Player",
+  "short_name": "DK Media",
+  "description": "Phone and browser access to movies and TV from your DK Media Plus server.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

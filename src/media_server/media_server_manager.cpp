@@ -230,7 +230,10 @@ void MediaServerManager::resolve_paths() {
     const ssize_t length = readlink("/proc/self/exe", executable, sizeof(executable) - 1);
     application_dir_ = length > 0 ? parent_directory(std::string(executable, static_cast<std::size_t>(length))) : ".";
     runtime_path_ = application_dir_ + "/components/jellyfin/runtime/jellyfin/jellyfin";
-    web_runtime_path_ = application_dir_ + "/components/web_player/nougat-web-service";
+    web_runtime_path_ = application_dir_ + "/components/web_player/dk-media-web-service";
+    // Existing installations can still have the legacy service executable.
+    if (!regular_executable(web_runtime_path_))
+        web_runtime_path_ = application_dir_ + "/components/web_player/nougat-web-service";
 
     const char* home = std::getenv("HOME");
     const std::string home_path = home ? home : ".";

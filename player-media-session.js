@@ -45,7 +45,7 @@
     if(!title||title==='Nothing selected')return;
     const item=currentItem();
     const artwork=posterUrl(item);
-    const metadata={title,artist:'Nougat Media Plus',album:item?[item.type,item.year||''].filter(Boolean).join(' • '):'Nougat Media Plus'};
+    const metadata={title,artist:'DK Media Plus',album:item?[item.type,item.year||''].filter(Boolean).join(' • '):'DK Media Plus'};
     if(artwork)metadata.artwork=[{src:artwork,sizes:'512x512'}];
     try{navigator.mediaSession.metadata=new MediaMetadata(metadata);}catch(_){try{delete metadata.artwork;navigator.mediaSession.metadata=new MediaMetadata(metadata);}catch(__){}}
   }

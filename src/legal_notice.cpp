@@ -80,7 +80,7 @@ bool nougat_show_first_run_legal_notice() {
 
     Window window = XCreateSimpleWindow(display, RootWindow(display, screen),
                                          130, 105, kWidth, kHeight, 0, accent, background);
-    XStoreName(display, window, "Nougat Media Plus - First Run Legal Notice");
+    XStoreName(display, window, "DK Media Plus - First Run Legal Notice");
     XSelectInput(display, window, ExposureMask | ButtonPressMask | KeyPressMask | StructureNotifyMask);
     Atom close_message = XInternAtom(display, "WM_DELETE_WINDOW", False);
     XSetWMProtocols(display, window, &close_message, 1);
@@ -97,7 +97,7 @@ bool nougat_show_first_run_legal_notice() {
     bool accepted = false;
     bool done = false;
     const char* rows[] = {
-        "Nougat Media Plus is a general-purpose media and technology application.",
+        "DK Media Plus is a general-purpose media and technology application.",
         "Features may play, download, transmit, stream, or share content.",
         "You are responsible for the content you access or distribute",
         "and for complying with applicable copyright, privacy, licensing,",
@@ -111,15 +111,15 @@ bool nougat_show_first_run_legal_notice() {
     auto paint = [&] {
         fill(display, window, gc, background, 0, 0, kWidth, kHeight);
         fill(display, window, gc, panel, 18, 18, kWidth - 36, kHeight - 36);
-        line(display, window, gc, gold, 40, 56, "NOUGAT MEDIA PLUS | FIRST-RUN LEGAL NOTICE");
+        line(display, window, gc, gold, 40, 56, "DK MEDIA PLUS | FIRST-RUN LEGAL NOTICE");
         line(display, window, gc, refused_once ? gold : muted, 40, 86,
-             refused_once ? "You must accept the Terms of Service to use Nougat. Refuse again to exit."
+             refused_once ? "You must accept the Terms of Service to use DK Media Plus. Refuse again to exit."
                           : "Please read carefully. Acceptance is required to continue.");
         for (int i = 0; i < 10; ++i) line(display, window, gc, white, 40, 116 + i * 24, rows[i]);
         fill(display, window, gc, checked ? accent : muted, 40, 369, 19, 19);
         fill(display, window, gc, panel, 43, 372, 13, 13);
         if (checked) line(display, window, gc, accent, 45, 384, "X");
-        line(display, window, gc, white, 71, 383, "I have read this notice and agree to use Nougat lawfully.");
+        line(display, window, gc, white, 71, 383, "I have read this notice and agree to use DK Media Plus lawfully.");
         fill(display, window, gc, checked ? accent : muted, 510, 414, 264, 36);
         line(display, window, gc, background, 540, 438, "I UNDERSTAND & AGREE");
         line(display, window, gc, muted, 40, 438, refused_once ? "Refuse & Exit (Esc)" : "Reject Terms (Esc)");

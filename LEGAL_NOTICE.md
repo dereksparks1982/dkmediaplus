@@ -1,11 +1,11 @@
-# Nougat Media Plus: Terms of Service and Responsible Use
+# DK Media Plus: Terms of Service and Responsible Use
 
 **Notice version:** 2026-10-30-v2  
 **Publisher:** Elderred Softworks LLC
 
-Nougat Media Plus is general-purpose software for media playback, management, streaming, networking, communications, research, and other technical activities. The software does not itself grant rights to obtain, copy, transmit, redistribute, or access content, systems, or services owned or controlled by others.
+DK Media Plus is general-purpose software for media playback, management, streaming, networking, communications, research, and other technical activities. The software does not itself grant rights to obtain, copy, transmit, redistribute, or access content, systems, or services owned or controlled by others.
 
-**Your responsibility.** You are responsible for material you access, store, stream, download, upload, transmit, or distribute through Nougat Media Plus, and for ensuring that your actions comply with applicable law. Respect copyright, privacy, service terms, intellectual property rights, and communications, broadcasting, spectrum, drone, and other applicable regulations. Some capabilities require separate permissions or licenses.
+**Your responsibility.** You are responsible for material you access, store, stream, download, upload, transmit, or distribute through DK Media Plus, and for ensuring that your actions comply with applicable law. Respect copyright, privacy, service terms, intellectual property rights, and communications, broadcasting, spectrum, drone, and other applicable regulations. Some capabilities require separate permissions or licenses.
 
 **No endorsement of misuse.** Elderred Softworks LLC does not authorize or endorse infringement, unlawful surveillance, unauthorized system access, or other illegal activities. Availability of a feature does not mean the user has permission to use it unlawfully.
 

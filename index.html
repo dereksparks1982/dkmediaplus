@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Nougat">
-  <title>Nougat Media Plus</title>
+  <title>DK Media Plus</title>
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="apple-touch-icon" href="./assets/branding/nougat-media-plus-master-N.png">
   <link rel="stylesheet" href="./styles.css">
@@ -30,13 +30,13 @@
 <body>
   <div id="nougatLegalGate" role="dialog" aria-modal="true" aria-labelledby="nougatLegalTitle" aria-describedby="nougatLegalDescription">
     <section class="nougat-legal-panel">
-      <h1 id="nougatLegalTitle">Nougat Media Plus: Terms of Service</h1>
-      <p id="nougatLegalDescription">Nougat Media Plus is general-purpose software for media, streaming, networking, and technical tools. You are responsible for material you access, download, transmit, stream, or share and for complying with applicable laws.</p>
+      <h1 id="nougatLegalTitle">DK Media Plus: Terms of Service</h1>
+      <p id="nougatLegalDescription">DK Media Plus is general-purpose software for media, streaming, networking, and technical tools. You are responsible for material you access, download, transmit, stream, or share and for complying with applicable laws.</p>
       <p>Use content, networks, and services only where you have the necessary rights or permission. Elderred Softworks LLC does not authorize illegal use and, to the extent permitted by law, disclaims responsibility for unlawful or unauthorized use by others.</p>
       <p>Review the <a href="./LEGAL_NOTICE.md" target="_blank" rel="noopener noreferrer">full legal notice</a>, <a href="./LICENSE" target="_blank" rel="noopener noreferrer">license</a>, and <a href="./THIRD_PARTY_NOTICES.md" target="_blank" rel="noopener noreferrer">third-party notices</a>. Existing licenses remain in force.</p>
       <p class="nougat-legal-note">This notice appears once per browser profile for this notice version. It may return after a notice revision or local data reset.</p>
-      <label class="nougat-legal-check"><input id="nougatLegalConsent" type="checkbox"><span>I have read and understand this notice, and I agree to use Nougat Media Plus lawfully.</span></label>
-      <p id="nougatLegalRejectWarning" class="nougat-legal-warning" role="alert" hidden>You must accept the Terms of Service to use Nougat Media Plus. If you refuse again, the application will close.</p>
+      <label class="nougat-legal-check"><input id="nougatLegalConsent" type="checkbox"><span>I have read and understand this notice, and I agree to use DK Media Plus lawfully.</span></label>
+      <p id="nougatLegalRejectWarning" class="nougat-legal-warning" role="alert" hidden>You must accept the Terms of Service to use DK Media Plus. If you refuse again, the application will close.</p>
       <div class="nougat-legal-actions">
         <button type="button" id="nougatLegalReject" class="nougat-legal-reject">Reject Terms</button>
         <button type="button" id="nougatLegalAgree" disabled>I Understand &amp; Agree</button>
@@ -46,7 +46,7 @@
   </div>
 
   <header class="topbar">
-    <img class="topbar-brand" src="./assets/branding/nougat-media-plus-topbar-lockup.png" alt="Nougat Media Plus">
+    <img class="topbar-brand" src="./assets/branding/nougat-media-plus-topbar-lockup.png" alt="DK Media Plus">
     <div class="topbar-state">
       <span class="server-label">Server:</span>
       <span class="server-light" id="serverLight" aria-hidden="true"></span>
@@ -58,7 +58,7 @@
 
   <dialog id="webHostDialog" class="web-host-dialog" aria-labelledby="webHostTitle">
     <form id="webHostForm" method="dialog">
-      <h2 id="webHostTitle">Connect to your Nougat media host</h2>
+      <h2 id="webHostTitle">Connect to your DK Media Plus media host</h2>
       <p>Both the full player and Quick Watch use this server. GitHub Pages does not store your movies or TV shows.</p>
       <label for="webHostAddress">HTTPS media bridge address</label>
       <input id="webHostAddress" type="url" placeholder="https://your-server.example" autocomplete="url" spellcheck="false" inputmode="url">
@@ -72,7 +72,7 @@
       <a href="./watch/">Open phone-friendly Quick Watch</a>
     </form>
   </dialog>
-  <aside class="module-rail" aria-label="Nougat modules">
+  <aside class="module-rail" aria-label="DK Media Plus modules">
     <button class="rail-button active" type="button" data-view="home"><span class="rail-icon">⌂</span><span>HOME</span></button>
     <button class="rail-button" type="button" data-view="player"><span class="rail-icon">▶</span><span>PLAYER</span></button>
     <button class="rail-button" type="button" data-view="library"><span class="rail-icon">▦</span><span>LIBRARY</span></button>
@@ -90,7 +90,7 @@
   </aside>
 
   <main class="app-content">
-    <section class="view active" id="homeView" data-view-panel="home" aria-label="Nougat Home">
+    <section class="view active" id="homeView" data-view-panel="home" aria-label="DK Media Home">
       <div class="view-scroll">
         <div class="nougat-home-watch-row">
           <h2 class="section-title">CONTINUE WATCHING</h2>
@@ -102,7 +102,7 @@
       </div>
     </section>
 
-    <section class="view" id="playerView" data-view-panel="player" aria-label="Nougat Player">
+    <section class="view" id="playerView" data-view-panel="player" aria-label="DK Media Player">
       <div class="player-page">
         <div class="video-frame">
           <video id="player" playsinline preload="metadata"></video>
@@ -130,7 +130,7 @@
       </div>
     </section>
 
-    <section class="view" id="libraryView" data-view-panel="library" aria-label="Nougat Library">
+    <section class="view" id="libraryView" data-view-panel="library" aria-label="DK Media Library">
       <div class="library-toolbar">
         <button type="button" class="sheet-button active-tool" id="moviesFilter">Movies</button>
         <button type="button" class="sheet-button" id="tvFilter">Television</button>
@@ -140,7 +140,7 @@
         <button type="button" class="sheet-button view-mode" id="listViewButton" aria-label="List view">☷</button>
         <button type="button" class="sheet-button view-mode active-tool" id="gridViewButton" aria-label="Grid view">▦</button>
       </div>
-      <p class="catalog-status" id="catalogStatus" aria-live="polite">Loading Nougat Library...</p>
+      <p class="catalog-status" id="catalogStatus" aria-live="polite">Loading DK Media Library...</p>
       <div class="library-grid" id="libraryGrid"></div>
       <div class="library-list" id="libraryList" hidden></div>
     </section>
