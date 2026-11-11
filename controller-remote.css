@@ -1,0 +1,5 @@
+
+/* Accessible, controller-driven focus without changing mouse/touch geometry. */
+.controller-focused { outline: 3px solid #d5ff80 !important; outline-offset: 2px !important; }
+#controllerStatus { display:block; min-height:20px; padding:3px 12px 4px; color:#96cbae; font-size:10px; }
+@media (max-width:700px) { #controllerStatus { font-size:9px; padding:2px 8px; } }
