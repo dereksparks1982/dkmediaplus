@@ -36,7 +36,7 @@ std::array<bool,11> snapshot(const std::array<std::int16_t,16>& axes,
         active_axis(x,m.deadzone,-1)||active_axis(dx,m.deadzone,-1),
         active_axis(x,m.deadzone, 1)||active_axis(dx,m.deadzone, 1),
         key(m.select),key(m.back),key(m.previous),key(m.next),key(m.play_pause),
-        key(m.previous),key(m.next)
+        false,false
     }};
 }
 }
@@ -97,7 +97,9 @@ std::vector<Event> ControllerManager::poll(){
                 if(h->actions[j]==now[j])continue;
                 h->actions[j]=now[j];
                 if(enabled_ && context_!=Context::Games && context_!=Context::DroneFlight)
-                    events.push_back({static_cast<Action>(j),now[j],h->device.id});
+                    events.push_back({context_==Context::Player && j==2 ? Action::SeekBackward :
+                                      context_==Context::Player && j==3 ? Action::SeekForward :
+                                      static_cast<Action>(j),now[j],h->device.id});
             }
         }
         if(disconnected){
