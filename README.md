@@ -42,7 +42,7 @@ DK Media Plus is an evolving project. Features vary by platform, compatible hard
 
 ## Linux and browser support
 
-The primary application targets **Linux**. The native CMake project is **DKMediaPlus**, and the intended release executable is **`dk-media-plus`**. Self-contained Linux packaging is in development; source builds are not yet a tested one-click distribution. The web companions run in modern mobile and desktop browsers; compatibility depends on your device, the source media format, and the server's ability to stream or transcode that format.
+The primary application targets **Linux**. A native Linux joystick controller core is now included in the C++ source tree, with input discovery, action mapping and device cleanup; native UI event-loop wiring and hardware validation remain outstanding. See [native controller source notes](docs/builds/DK_MEDIA_v0_0_69_NATIVE_CONTROLLER_CORE_2026_11_11.md). The native CMake project is **DKMediaPlus**, and the intended release executable is **`dk-media-plus`**. Self-contained Linux packaging is in development; source builds are not yet a tested one-click distribution. The web companions run in modern mobile and desktop browsers; compatibility depends on your device, the source media format, and the server's ability to stream or transcode that format.
 
 The browser interface is a frontend, not a cloud-storage service. To browse and play your own media, the DK Media Plus host must be online. Network access may require your own HTTPS bridge and appropriate security settings.
 
