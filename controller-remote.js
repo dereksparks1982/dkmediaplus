@@ -3,10 +3,39 @@
 (() => {
   'use strict';
   const state = { index: -1, connected: false, focus: null, held: '', repeatedAt: 0, running: false };
-  const deadzone = 0.55;
-  const repeatDelay = 320;
-  const repeatInterval = 115;
-  const buttons = { accept: 0, back: 1, previous: 4, next: 5, play: 9 };
+  const SETTINGS_KEY = 'dk-media-controller-v1';
+  const defaults = Object.freeze({ deadzone: 0.55, repeatDelay: 320, repeatInterval: 115,
+    enabled: true, buttons: { accept:0, back:1, previous:4, next:5, play:9 } });
+  function sanitize(raw) {
+    const settings = raw && typeof raw === 'object' ? raw : {};
+    const clamp = (value, min, max, fallback) =>
+      Number.isFinite(Number(value)) ? Math.min(max,Math.max(min,Number(value))) : fallback;
+    const buttons = {};
+    for (const [action,index] of Object.entries(defaults.buttons)) {
+      const value = Number(settings.buttons?.[action]);
+      buttons[action] = Number.isInteger(value) && value >= 0 && value <= 16 ? value : index;
+    }
+    return { enabled: settings.enabled !== false,
+      deadzone: clamp(settings.deadzone,0.2,0.9,defaults.deadzone),
+      repeatDelay: clamp(settings.repeatDelay,180,800,defaults.repeatDelay),
+      repeatInterval: clamp(settings.repeatInterval,80,350,defaults.repeatInterval),
+      buttons };
+  }
+  function load() {
+    try { return sanitize(JSON.parse(localStorage.getItem(SETTINGS_KEY))); }
+    catch (_) { return sanitize(null); }
+  }
+  let settings = load();
+  function save(next) {
+    const cleaned = sanitize(next);
+    const assigned = Object.values(cleaned.buttons);
+    if (new Set(assigned).size !== assigned.length) return false;
+    try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(cleaned)); }
+    catch (_) { return false; }
+    settings = cleaned; state.held = '';
+    window.dispatchEvent(new Event('dk-media:controller-settings'));
+    return true;
+  }
   const rail = () => [...document.querySelectorAll('.module-rail .rail-button')];
   const modal = () => [...document.querySelectorAll('dialog[open], [role="dialog"]:not([hidden])')]
     .filter(el => getComputedStyle(el).display !== 'none' && !el.inert).at(-1);
@@ -34,7 +63,7 @@
     state.focus = el;
     el.classList.add('controller-focused');
     el.focus({ preventScroll: true });
-    el.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'instant' });
+    el.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'auto' });
     return true;
   }
   function navigate(direction) {
@@ -85,7 +114,7 @@
     else focus(rail()[0]);
   }
   function action(name) {
-    if (window.NougatLegalAccepted !== true) return;
+    if (window.NougatLegalAccepted !== true || !settings.enabled) return;
     const dialog = modal();
     if (name === 'back') { goBack(); return; }
     if (name === 'accept') {
@@ -121,7 +150,7 @@
   function poll(time) {
     if (!state.running) return;
     requestAnimationFrame(poll);
-    if (document.hidden || window.NougatLegalAccepted !== true) return;
+    if (document.hidden || window.NougatLegalAccepted !== true || !settings.enabled) { state.held = ''; return; }
     const p = gamepad();
     if (!p) {
       if (state.connected) status('Controller disconnected');
@@ -132,20 +161,20 @@
     state.connected = true; state.index = p.index;
     const axisX = p.axes[0] || 0, axisY = p.axes[1] || 0;
     let command = '';
-    if (pressed(p, buttons.back)) command = 'back';
-    else if (pressed(p, buttons.accept)) command = 'accept';
-    else if (pressed(p, buttons.play)) command = 'play';
-    else if (pressed(p, buttons.previous)) command = 'previous';
-    else if (pressed(p, buttons.next)) command = 'next';
-    else if (pressed(p, 12) || axisY < -deadzone) command = 'up';
-    else if (pressed(p, 13) || axisY > deadzone) command = 'down';
-    else if (pressed(p, 14) || axisX < -deadzone) command = 'left';
-    else if (pressed(p, 15) || axisX > deadzone) command = 'right';
+    if (pressed(p, settings.buttons.back)) command = 'back';
+    else if (pressed(p, settings.buttons.accept)) command = 'accept';
+    else if (pressed(p, settings.buttons.play)) command = 'play';
+    else if (pressed(p, settings.buttons.previous)) command = 'previous';
+    else if (pressed(p, settings.buttons.next)) command = 'next';
+    else if (pressed(p, 12) || axisY < -settings.deadzone) command = 'up';
+    else if (pressed(p, 13) || axisY > settings.deadzone) command = 'down';
+    else if (pressed(p, 14) || axisX < -settings.deadzone) command = 'left';
+    else if (pressed(p, 15) || axisX > settings.deadzone) command = 'right';
     if (!command) { state.held = ''; return; }
     if (state.held !== command) {
-      state.held = command; state.repeatedAt = time + repeatDelay; action(command);
+      state.held = command; state.repeatedAt = time + settings.repeatDelay; action(command);
     } else if (['up','down','left','right'].includes(command) && time >= state.repeatedAt) {
-      state.repeatedAt = time + repeatInterval; action(command);
+      state.repeatedAt = time + settings.repeatInterval; action(command);
     }
   }
   // Keyboard navigation is opt-in only when controller mode is active.
@@ -174,5 +203,15 @@
   }
   if (window.NougatLegalAccepted === true) start();
   else window.addEventListener('nougat:legal-accepted', start, { once: true });
-  window.DKMediaController = Object.freeze({ navigate, action, isConnected: () => state.connected });
+  window.addEventListener('storage', event => {
+    if (event.key === SETTINGS_KEY) { settings = load(); state.held = ''; }
+  });
+  window.DKMediaController = Object.freeze({
+    navigate, action, isConnected: () => state.connected,
+    getSettings: () => JSON.parse(JSON.stringify(settings)),
+    setSettings: save,
+    resetSettings: () => save(defaults),
+    getGamepad: gamepad,
+    status
+  });
 })();
