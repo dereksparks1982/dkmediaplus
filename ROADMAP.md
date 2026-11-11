@@ -1,3 +1,13 @@
+# DK Media Plus v0.0.69 controller settings and live tester (2026-11-11)
+
+- Extended the full browser player's standard-gamepad navigation with persistent per-browser button mappings (Select, Back, Previous, Next and Play) and collision checks for duplicate assignments.
+- Added an **Enable controller navigation** switch, adjustable left-stick dead zone, initial repeat delay and repeat interval.
+- Added **System → Controller** with a settings form, restore-defaults action, live button/axis diagnostic surface, and a controller test focus target.
+- Input settings are validated, bounded and persisted in browser localStorage; storage changes synchronize between same-origin tabs. The controller remains disabled while the terms gate is outstanding.
+- The tester polls only while its panel is mounted. This web-browser controller layer does not feed commands into native games or any aircraft.
+- JavaScript parsing and entry-file wiring were checked on both `main` and `gh-pages`; **real controller behavior, browser compatibility, accessibility and native Linux controller integration remain unverified**.
+- Keep **v0.0.69**, no GitHub Actions, no executable or download.
+
 # DK Media Plus v0.0.69 controller and remote navigation source slice (2026-11-11)
 
 - Added `controller-remote.js` and `controller-remote.css` to the full browser player on both `main` and `gh-pages`.
