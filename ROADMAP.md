@@ -1,3 +1,12 @@
+## v0.0.69 Native Linux joystick controller core (2026-11-11)
+
+- Introduced `src/input/controller_manager.hpp/.cpp` using nonblocking Linux joystick devices, bounded polling, configurable axes/buttons and dead zone, action transitions and disconnect cleanup.
+- Added separate UI, Player, Games and DroneFlight input contexts. Game and drone contexts remain isolated; Player horizontal actions distinguish seeking.
+- Included the native module in `dk_media_plus` and created an opt-in C++ controller smoke-test target and standalone test source.
+- **Still required:** compile/test on Linux, native X11 main-loop action routing, native System controller settings and persistence, physical DualSense testing, compatibility and permission checks. This does not constitute native end-to-end controller integration.
+- [Native controller source review](docs/builds/DK_MEDIA_v0_0_69_NATIVE_CONTROLLER_CORE_2026_11_11.md).
+- Version remains **v0.0.69**; no GitHub Actions, executable or download.
+
 # DK Media Plus v0.0.69 controller settings and live tester (2026-11-11)
 
 - Extended the full browser player's standard-gamepad navigation with persistent per-browser button mappings (Select, Back, Previous, Next and Play) and collision checks for duplicate assignments.
