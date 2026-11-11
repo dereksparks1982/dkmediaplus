@@ -1,3 +1,12 @@
+# DK Media Plus v0.0.69 controller and remote navigation source slice (2026-11-11)
+
+- Added `controller-remote.js` and `controller-remote.css` to the full browser player on both `main` and `gh-pages`.
+- Standard Gamepad API mappings: D-pad/left stick directional focus, A/Cross activation, B/Circle back, Start playback toggle on Player, shoulder buttons previous/next, directional seek when player focus is neutral.
+- Uses directional geometric focus selection, focus rings, bounded repeat timing, active-view targets, dialog focus containment, and a connected/disconnected status display.
+- No gamepad commands run before the first-use legal notice has been accepted. The controller does not arm aircraft, control drones, launch native emulator backends, or modify the native application's UI.
+- This is a source implementation, **not** verified controller compatibility on Firefox, phone browsers or Linux gamepads. Outstanding: PS5 DualSense hands-on mapping, accessibility regression testing, key remapping, configurable dead zones, and native System controller settings.
+- Version stays **v0.0.69**. No GitHub Actions, packages or binaries.
+
 ## DK Media Plus v0.0.69 repair: native compile and Pages archive (2026-11-11)
 
 - Repair 14 invalid `ViewMode` enumerators introduced during the branding rename; restore the existing internal `ViewMode::Nougat` constant without changing visible product branding.
