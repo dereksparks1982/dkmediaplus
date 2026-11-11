@@ -1,0 +1,15 @@
+
+/* Controller configuration within System's existing module workspace. */
+.controller-settings { display:grid; gap:12px; max-width:800px; padding:12px 4px; }
+.controller-field { display:grid; grid-template-columns:minmax(160px,1fr) minmax(130px,1fr); align-items:center; gap:12px; color:#d4ebde; font-size:12px; }
+.controller-field input[type=range] { width:100%; accent-color:#51ec89; }
+.controller-field input[type=checkbox] { justify-self:start; width:20px; height:20px; accent-color:#51ec89; }
+.controller-field select { width:100%; min-width:0; padding:9px; background:#08241a; border:1px solid #147848; color:#e1efe8; }
+.controller-mapping { display:grid; gap:10px; border:1px solid #155636; padding:12px; }
+.controller-mapping legend { color:#7ceca8; font-weight:700; }
+.controller-live { max-width:800px; margin:10px 4px; padding:14px; border:1px solid #155636; background:#061c14; }
+.controller-live h3 { margin:0 0 7px; font-size:14px; }
+.controller-live p { font-size:12px; overflow-wrap:anywhere; }
+.controller-test-pad { min-height:56px; padding:12px; border:1px solid #308b57; background:#04120e; color:#bdf4cd; overflow-wrap:anywhere; }
+.controller-test-pad:focus-visible { outline:3px solid #d5ff80; outline-offset:2px; }
+@media(max-width:650px) { .controller-field { grid-template-columns:1fr; gap:5px; } }
