@@ -17,6 +17,7 @@ configure_file("${CMAKE_SOURCE_DIR}/src/games/rpcs3_runtime_wrapper.sh" "${NMP_R
 
 add_executable(dk_media_plus
     src/main.cpp
+    src/input/controller_manager.cpp
     src/legal_notice.cpp
     src/network_center.cpp
     src/satellite_center.cpp
@@ -115,3 +116,15 @@ target_link_libraries(dk_media_web_service PRIVATE Threads::Threads)
 set_target_properties(dk_media_web_service PROPERTIES OUTPUT_NAME "dk-media-web-service")
 
 
+
+# Source-level Linux gamepad smoke test; opt-in locally, no GitHub Actions.
+option(DK_MEDIA_CONTROLLER_TESTS "Build Linux controller core smoke test" OFF)
+if(DK_MEDIA_CONTROLLER_TESTS)
+    enable_testing()
+    add_executable(dk_media_controller_test
+        tests/controller_manager_test.cpp
+        src/input/controller_manager.cpp)
+    target_include_directories(dk_media_controller_test PRIVATE "${CMAKE_SOURCE_DIR}/src")
+    target_compile_options(dk_media_controller_test PRIVATE -Wall -Wextra -Werror)
+    add_test(NAME dk_media_controller_core COMMAND dk_media_controller_test)
+endif()
