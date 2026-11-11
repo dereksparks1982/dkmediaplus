@@ -3681,7 +3681,7 @@ public:
     bool page_uses_connected_square_frame(ViewMode view) const {
         return view == ViewMode::Home || view == ViewMode::VideoPlayer ||
                view == ViewMode::Library || view == ViewMode::Discover ||
-               view == ViewMode::LiveTV || view == ViewMode::WorldTV || view == ViewMode::Radio || view == ViewMode::DK Media Plus ||
+               view == ViewMode::LiveTV || view == ViewMode::WorldTV || view == ViewMode::Radio || view == ViewMode::Nougat ||
                view == ViewMode::Stream || view == ViewMode::Studio ||
                view == ViewMode::Games || view == ViewMode::Network || view == ViewMode::Debug;
     }
@@ -4080,7 +4080,7 @@ public:
     void apply_video_layout() {
         if (!video) return;
         if (currentView == ViewMode::Home || currentView == ViewMode::Library || currentView == ViewMode::Discover ||
-            currentView == ViewMode::Radio || currentView == ViewMode::DK Media Plus || currentView == ViewMode::Stream || currentView == ViewMode::Studio || currentView == ViewMode::Games || currentView == ViewMode::P2P || currentView == ViewMode::Network ||
+            currentView == ViewMode::Radio || currentView == ViewMode::Nougat || currentView == ViewMode::Stream || currentView == ViewMode::Studio || currentView == ViewMode::Games || currentView == ViewMode::P2P || currentView == ViewMode::Network ||
             currentView == ViewMode::Debug || currentView == ViewMode::LiveTV || currentView == ViewMode::WorldTV) {
             hide_player_activity_overlay_window();
             XUnmapWindow(d, video);
@@ -6712,7 +6712,7 @@ public:
     }
     void draw_p2p_screen(Drawable target) {
         const bool embeddedInSearch = currentView == ViewMode::Nougat;
-        const ViewPalette palette = palette_for(embeddedInSearch ? ViewMode::DK Media Plus : ViewMode::P2P);
+        const ViewPalette palette = palette_for(embeddedInSearch ? ViewMode::Nougat : ViewMode::P2P);
         const unsigned long dark = palette.text;
         const unsigned long fieldInk = col(0x0d0d,0x1b1b,0x2a2a);
         unsigned long border = p2pMagnetFocused ? col(0x7070,0xb0b0,0xdada) : palette.border;
@@ -6740,7 +6740,7 @@ public:
             cx=std::min(cx,p2pMagnetRect.x+p2pMagnetRect.w-8);
             line(target,cx,p2pMagnetRect.y+5,cx,p2pMagnetRect.y+23,fieldInk);
         }
-        apply_page_clip(embeddedInSearch ? ViewMode::DK Media Plus : ViewMode::P2P);
+        apply_page_clip(embeddedInSearch ? ViewMode::Nougat : ViewMode::P2P);
         if (embeddedInSearch) draw_concept_field(target,p2pOutputRect,palette.field,palette.border,false);
         else { fill(target,p2pOutputRect,palette.field); outline(target,p2pOutputRect,palette.border); }
         text(target,p2pOutputRect.x+8,p2pOutputRect.y+18,tail_to_width("Download folder: "+p2pOutputFolder,p2pOutputRect.w-16),fieldInk);
@@ -10780,9 +10780,19 @@ public:
         const std::filesystem::path source(studioConvertSource);
         const std::filesystem::path directory(studioConvertFolder);
         const auto preset = studioConvertPreset;
-        // Reuse the engine's preset map, including SubtitleSrt.
-        const char* extension = ::nougat::studio::output_extension(preset);
-        if (extension[0] == '\0') return {};
+        // Keep all presets explicit; SubtitleSrt exports use .srt.
+        const char* extension = ".mp4";
+        switch (preset) {
+            case ::nougat::studio::Preset::RemuxMp4:
+            case ::nougat::studio::Preset::VideoMp4H264: extension = ".mp4"; break;
+            case ::nougat::studio::Preset::RemuxMkv: extension = ".mkv"; break;
+            case ::nougat::studio::Preset::VideoWebmVp9: extension = ".webm"; break;
+            case ::nougat::studio::Preset::AudioMp3: extension = ".mp3"; break;
+            case ::nougat::studio::Preset::AudioFlac: extension = ".flac"; break;
+            case ::nougat::studio::Preset::AudioWav: extension = ".wav"; break;
+            case ::nougat::studio::Preset::AudioOpus: extension = ".opus"; break;
+            case ::nougat::studio::Preset::SubtitleSrt: extension = ".srt"; break;
+        }
         // Choose a free name without touching any existing media. This allows
         // repeated exports and different presets while preserving past results.
         const std::string base = source.stem().string() + "-nougat";
@@ -13043,7 +13053,7 @@ public:
 
     reddmedia::DiagnosticInput diagnostic_input() {
         reddmedia::DiagnosticInput input;
-        input.app_version = "DK Media Plus v0.0.59";
+        input.app_version = "DK Media Plus v0.0.69";
         input.executable_path = resolved_executable_path();
         input.project_root = exe_dir();
         input.current_view = current_view_name();
@@ -13684,7 +13694,7 @@ public:
     }
 
     void handle_nougat_motion(const XMotionEvent& event) {
-        if (currentView != ViewMode::DK Media Plus || nougatPanel != NougatPanel::Crawler || !nougatOutputSelecting || event.window != win) return;
+        if (currentView != ViewMode::Nougat || nougatPanel != NougatPanel::Crawler || !nougatOutputSelecting || event.window != win) return;
         int line_index = nougat_log_line_at(event.y);
         std::size_t count = 0;
         { std::lock_guard<std::mutex> lock(nougatState->mutex); count = nougatState->crawl_log.size(); }
@@ -18191,8 +18201,8 @@ public:
             }
         }
         if (target == win && currentView == ViewMode::Stream && y >= 198 && y < 234) { scroll_button_row(ytdlpButtonsScrollX,4,delta); return true; }
-        if (target == win && currentView == ViewMode::DK Media Plus && nougatPanel == NougatPanel::P2P && y >= 224 && y < 266) { scroll_button_row(p2pButtonsScrollX,5,delta); return true; }
-        if (target == win && currentView == ViewMode::DK Media Plus && nougatPanel == NougatPanel::P2P && nougatNetworkAdvanced &&
+        if (target == win && currentView == ViewMode::Nougat && nougatPanel == NougatPanel::P2P && y >= 224 && y < 266) { scroll_button_row(p2pButtonsScrollX,5,delta); return true; }
+        if (target == win && currentView == ViewMode::Nougat && nougatPanel == NougatPanel::P2P && nougatNetworkAdvanced &&
             nougatNetworkActionsViewport.contains(x,y)) {
             scroll_button_row(nougatNetworkButtonsScrollX,4,delta,nougatNetworkActionsViewport.w);
             return true;
@@ -18296,7 +18306,7 @@ public:
             redraw();
             return true;
         }
-        if (currentView == ViewMode::DK Media Plus && target == win) {
+        if (currentView == ViewMode::Nougat && target == win) {
             if (nougatPanel == NougatPanel::Search && nougatResultsBox.contains(x,y)) {
                 nougatResultScroll = std::max(0, nougatResultScroll + (button == Button4 ? -1 : 1));
                 redraw();
@@ -18427,12 +18437,12 @@ public:
             show_url_context_menu(x, y);
             return;
         }
-        if (currentView == ViewMode::DK Media Plus && nougatPanel == NougatPanel::P2P && target == win && p2pMagnetRect.contains(x,y) && button == Button3) {
+        if (currentView == ViewMode::Nougat && nougatPanel == NougatPanel::P2P && target == win && p2pMagnetRect.contains(x,y) && button == Button3) {
             p2pMagnetFocused=true;
             XSetInputFocus(d,win,RevertToParent,CurrentTime);
             redraw(); show_p2p_url_context_menu(x,y); return;
         }
-        if (currentView == ViewMode::DK Media Plus && target == win && nougatPanel == NougatPanel::Crawler && nougatCrawlLogBox.contains(x,y) && button == Button3) {
+        if (currentView == ViewMode::Nougat && target == win && nougatPanel == NougatPanel::Crawler && nougatCrawlLogBox.contains(x,y) && button == Button3) {
             nougatOutputFocused=true; nougatInputFocus=NougatInputFocus::NoFocus;
             redraw(); show_nougat_output_context_menu(x,y); return;
         }
@@ -19149,7 +19159,7 @@ public:
                             redraw();
                         }
                     }
-                    else if (currentView == ViewMode::DK Media Plus && nougatPanel == NougatPanel::P2P && p2pMagnetFocused) {
+                    else if (currentView == ViewMode::Nougat && nougatPanel == NougatPanel::P2P && p2pMagnetFocused) {
                         if (ks == XK_Escape) { p2pMagnetFocused=false; p2pMagnetSelectAll=false; redraw(); }
                         else if (ks == XK_Return || ks == XK_KP_Enter) { start_p2p_magnet(); }
                         else if ((e.xkey.state & ControlMask) && (ks == XK_a || ks == XK_A)) { p2pMagnetSelectAll=!p2pMagnet.empty(); redraw(); }
@@ -19353,7 +19363,7 @@ public:
             static long long lastSecurityProgressRedrawMs = 0;
             bool securityBusyForRedraw = false;
             { std::lock_guard<std::mutex> lock(securityState->mutex); securityBusyForRedraw = securityState->busy; }
-            if (!fullscreen && currentView == ViewMode::DK Media Plus && nougatPanel == NougatPanel::VirusScan &&
+            if (!fullscreen && currentView == ViewMode::Nougat && nougatPanel == NougatPanel::VirusScan &&
                 securityBusyForRedraw && now_ms() - lastSecurityProgressRedrawMs >= 250LL) {
                 lastSecurityProgressRedrawMs = now_ms();
                 redraw();
@@ -19390,7 +19400,7 @@ public:
                 redraw();
             }
             // NOUGAT_V39_DIAGNOSTIC_REPAIR: queued full sweep after playback
-            if (!fullscreen && currentView == ViewMode::DK Media Plus && nougatPanel == NougatPanel::P2P && now_ms()-lastP2PRedrawMs >= 500) { lastP2PRedrawMs=now_ms(); maybe_auto_scan_completed_p2p(); redraw(); }
+            if (!fullscreen && currentView == ViewMode::Nougat && nougatPanel == NougatPanel::P2P && now_ms()-lastP2PRedrawMs >= 500) { lastP2PRedrawMs=now_ms(); maybe_auto_scan_completed_p2p(); redraw(); }
             if (playerActivityOverlayVisible) {
                 const long long activityNow = now_ms();
                 if (!player_activity_is_active(activityNow, lastPlayerActivityMotionMs)) {

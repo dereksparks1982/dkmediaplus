@@ -17,7 +17,7 @@ Current development line: **v0.0.69**. It brings personal movies and TV, music a
 
 **[Open the full DK Media Web Player](https://dereksparks1982.github.io/dkmediaplus/)**
 
-The browser viewers are intended to be hosted on GitHub Pages; availability after the repository rename still requires a successful Pages deployment. Your personal media files **are not uploaded to GitHub**. Playback, catalogs, and artwork come from your running DK Media Plus media server through an HTTPS bridge, including the compatible bridge used for the Hanafi web viewer.
+The browser viewers are prepared on the dedicated, web-only `gh-pages` branch. The repository's Pages setting must publish from `gh-pages` at `/(root)`. GitHub Pages deployment remains unverified until that setting is corrected and GitHub reports success. Your personal media files **are not uploaded to GitHub**. Playback, catalogs, and artwork come from your running DK Media Plus media server through an HTTPS bridge, including the compatible bridge used for the Hanafi web viewer.
 
 DK Watch is the straightforward way to watch from a phone or tablet: connect to your host, search movies or TV, tap a title, play it, and resume later. Watch's **Continue** filter and the full player's Continue Watching section use the same per-server browser-local playback positions. The full web player has a larger interface with additional modules.
 

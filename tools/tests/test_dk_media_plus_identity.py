@@ -28,6 +28,9 @@ class DKMediaIdentity(unittest.TestCase):
                      "com.dksoftworks.DKMediaPlus"):
             self.assertIn(item,source)
         self.assertNotIn("NougatMediaPlus",source)
+        self.assertNotIn("ViewMode::DK Media Plus",source)
+        self.assertNotIn("::studio::output_extension(",source)
+        self.assertIn('Preset::SubtitleSrt: extension = ".srt"',source)
         self.assertNotIn("v0.0.68",source)
         self.assertIn(".config/nougat-media-plus",source,
                       "Legacy settings must remain readable")
@@ -63,6 +66,7 @@ class DKMediaIdentity(unittest.TestCase):
         self.assertIn('build / "dk-media-web-service"',pack)
         self.assertIn("check_pointers",pack)
         self.assertIn("--linuxdeploy",pack)
+        self.assertNotIn('"--executable", str(binary_dir / "components/web_player/nougat-web-service")',pack)
         self.assertIn("--developer-ai-stub",pack)
 
 if __name__=="__main__":

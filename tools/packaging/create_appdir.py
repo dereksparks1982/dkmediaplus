@@ -170,7 +170,7 @@ def stage(args):
         command = [
             str(linuxdeploy), "--appdir", str(appdir),
             "--executable", str(binary_dir / "dk-media-plus"),
-            "--executable", str(binary_dir / "components/web_player/nougat-web-service"),
+            "--executable", str(binary_dir / "components/web_player/dk-media-web-service"),
             "--executable", str(tools["ffmpeg"]), "--executable", str(tools["ffprobe"]),
             "--executable", str(tools["zenity"]),
             "--library", str(library_path("libvlc.so.5")),

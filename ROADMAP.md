@@ -1,3 +1,12 @@
+## DK Media Plus v0.0.69 repair: native compile and Pages archive (2026-11-11)
+
+- Repair 14 invalid `ViewMode` enumerators introduced during the branding rename; restore the existing internal `ViewMode::Nougat` constant without changing visible product branding.
+- Replace the nonexistent Studio `output_extension` call with an exhaustive preset switch, including `.srt` subtitle output.
+- Correct the offline Linux package tool to include the actual `dk-media-web-service` executable.
+- Prepare a restricted `gh-pages` branch with only browser resources (250 files/directories) instead of the 70,000-file application source tree. Remove obsolete GitHub Actions workflow files to respect the no-Actions policy.
+- **Pages settings still require the repository owner to select** Settings → Pages → Deploy from a branch → `gh-pages` → `/(root)`. The GitHub token used by the prior workflow received HTTP 403 when it tried to change this repository setting.
+- No claim of a full native build or successful Pages deployment is made until those checks actually pass. Version remains v0.0.69.
+
 ## DK Media Plus v0.0.69 identity and Linux packaging source repair (2026-11-11)
 
 - Active product identity is **DK Media Plus**, developed under **DK Softworks**. Replace retired product names in native window text, legal notices, web viewers, PWA manifests, README, desktop launcher, and native output names.
