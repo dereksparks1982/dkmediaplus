@@ -10780,17 +10780,9 @@ public:
         const std::filesystem::path source(studioConvertSource);
         const std::filesystem::path directory(studioConvertFolder);
         const auto preset = studioConvertPreset;
-        const char* extension = ".mp4";
-        switch (preset) {
-            case ::nougat::studio::Preset::RemuxMp4:
-            case ::nougat::studio::Preset::VideoMp4H264: extension = ".mp4"; break;
-            case ::nougat::studio::Preset::RemuxMkv: extension = ".mkv"; break;
-            case ::nougat::studio::Preset::VideoWebmVp9: extension = ".webm"; break;
-            case ::nougat::studio::Preset::AudioMp3: extension = ".mp3"; break;
-            case ::nougat::studio::Preset::AudioFlac: extension = ".flac"; break;
-            case ::nougat::studio::Preset::AudioWav: extension = ".wav"; break;
-            case ::nougat::studio::Preset::AudioOpus: extension = ".opus"; break;
-        }
+        // Reuse the engine's preset map, including SubtitleSrt.
+        const char* extension = ::nougat::studio::output_extension(preset);
+        if (extension[0] == '\0') return {};
         // Choose a free name without touching any existing media. This allows
         // repeated exports and different presets while preserving past results.
         const std::string base = source.stem().string() + "-nougat";
@@ -10873,7 +10865,7 @@ public:
         }
         ensure_studio_convert_service();
         const ::nougat::studio::ExportRequest request{
-            std::filesystem::path(studioConvertSource), output, studioConvertPreset};
+            std::filesystem::path(studioConvertSource), output, studioConvertPreset, {}};
         auto* service = studioConvertService.get();
         studioConvertStatus = "Inspecting media and preparing the export...";
         studioConvertSubmission = std::async(std::launch::async, [service, request] {

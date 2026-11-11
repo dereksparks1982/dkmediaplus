@@ -115,3 +115,8 @@ components/jellyfin/runtime/jellyfin/libcoreclr.so filter=lfs diff=lfs merge=lfs
 components/jellyfin/runtime/jellyfin/libSkiaSharp.so filter=lfs diff=lfs merge=lfs -text
 components/jellyfin/runtime/jellyfin/System.Private.Xml.dll filter=lfs diff=lfs merge=lfs -text
 components/jellyfin/runtime/jellyfin/libSkiaSharp.so.116.0.0 filter=lfs diff=lfs merge=lfs -text
+
+# Git metadata must stay normal text inside vendored LFS runtime trees.
+**/.gitattributes -filter -diff -merge text
+**/.gitignore -filter -diff -merge text
+**/.gitmodules -filter -diff -merge text

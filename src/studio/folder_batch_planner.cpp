@@ -158,7 +158,7 @@ FolderBatchPlan plan_folder_batch(const FolderBatchOptions& options,
             return;
         }
         result.source_bytes += bytes;
-        result.exports.push_back({entry.path(), proposed, options.preset});
+        result.exports.push_back({entry.path(), proposed, options.preset, {}});
     };
 
     // Sort source paths to make collision handling and previews deterministic.
