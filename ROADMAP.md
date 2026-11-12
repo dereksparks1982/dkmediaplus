@@ -1,3 +1,18 @@
+## DK Media Plus v0.0.69 Web player contract repair (2026-11-11)
+
+This source repair addresses reproducible discrepancies between the full GitHub Pages viewer and its LAN host implementation.
+
+- Updated the `main` and `gh-pages` service worker cache revision to include the controller JS/CSS and configuration panel assets, allowing old cached shells to be replaced on service-worker activation.
+- The Discover/Search module bridge now uses the primary web player's catalog when populated instead of showing an independently stale catalog, and obtains playback positions through the same host-scoped `NougatWebResume` store as Quick Watch.
+- Updated the native LAN server health response to identify **DK Media Plus v0.0.69**. Added `/nougat/v1/capabilities` listing actual implemented routes and reserved/unimplemented routes, rather than claiming that every web tab has backend support.
+- JavaScript syntax checks passed for eight critical `gh-pages` files using a JavaScript parser.
+
+**Do not mistake this for full web-feature parity.** The LAN host still serves a separate legacy `components/web_player/` interface, and many tabs request missing native-server contracts (including Radio, Games, Search, Discover, Studio, Security and P2P). Browser page loading is not equivalent to native tools working.
+
+**Remote security boundary:** GitHub Pages is cross-origin to the media host. The LAN-only terms-cookie session deliberately rejects cross-origin acknowledgement, and the LAN HTTP service does not advertise CORS permissions. The remote HTTPS bridge must explicitly implement secure, origin-restricted access and proper authentication; do not make the media library public by adding wildcard CORS or stripping the LAN session requirement.
+
+**Unverified:** The interactive published Pages UI could not be opened by available browser retrieval tools during this pass. Real Pages deployment, HTTPS bridge access, on-device media playback, module action integration and full native compilation still need verification. No GitHub Actions or version bump.
+
 ## v0.0.69 Native Linux joystick controller core (2026-11-11)
 
 - Introduced `src/input/controller_manager.hpp/.cpp` using nonblocking Linux joystick devices, bounded polling, configurable axes/buttons and dead zone, action transitions and disconnect cleanup.
