@@ -77,12 +77,11 @@
   }
 
   function getResume(item) {
-    try {
-      const state = JSON.parse(localStorage.getItem('nougat-web-resume-v2') || '{}');
-      return state && item ? state[item.id] || null : null;
-    } catch (_) {
-      return null;
-    }
+    if (!item || !item.id) return null;
+    // The full player and Quick Watch use one per-host resume store.
+    if (window.NougatWebResume)
+      return window.NougatWebResume.read(baseUrl())[item.id] || null;
+    return null;
   }
 
   function rail(view) {
