@@ -217,7 +217,12 @@
   }
 
   const host = {
-    getItems: () => catalog.slice(),
+    getItems: () => {
+      // The primary player owns the authoritative, host-scoped media catalog.
+      // Reuse it instead of showing an independently stale second catalog.
+      const current = window.NougatWebPlayer?.getCatalog?.() || [];
+      return current.length ? current : catalog.slice();
+    },
     getResume,
     playItem,
     playUrl,
