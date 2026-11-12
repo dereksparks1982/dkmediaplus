@@ -217,7 +217,7 @@ bool send_response(int client,
                    const std::vector<std::pair<std::string, std::string>>& extra_headers = {}) {
     std::ostringstream header;
     header << "HTTP/1.1 " << status << ' ' << reason << "\r\n"
-           << "Server: Nougat/0.0.55\r\n"
+           << "Server: DKMediaPlus/0.0.69\r\n"
            << "Content-Type: " << content_type << "\r\n"
            << "Content-Length: " << body.size() << "\r\n"
            << "Cache-Control: no-store\r\n"
@@ -759,7 +759,15 @@ void handle_client(int client, const std::shared_ptr<SharedState>& state) {
                         "Accept the Nougat Terms of Service in the LAN viewer before using media APIs.");
     } else if (path == "/nougat/v1/health") {
         send_response(client, 200, "OK", "application/json; charset=utf-8",
-                      "{\"ok\":true,\"product\":\"Nougat Media Suite\",\"version\":\"0.0.55\",\"service\":\"LAN Web Player\",\"lanOnly\":true}",
+                      "{\"ok\":true,\"product\":\"DK Media Plus\",\"version\":\"0.0.69\",\"service\":\"DK Media Plus LAN Web Player\",\"lanOnly\":true}",
+                      head_only);
+    } else if (path == "/nougat/v1/capabilities") {
+        // Truthful route inventory. Reserved contracts are NOT advertised as working.
+        send_response(client, 200, "OK", "application/json; charset=utf-8",
+                      "{\"ok\":true,\"product\":\"DK Media Plus\",\"version\":\"0.0.69\","
+                      "\"requiresLanTerms\":true,\"lanOnly\":true,"
+                      "\"available\":[\"health\",\"catalog\",\"artwork\",\"media\",\"transcode\",\"stream\"],"
+                      "\"unavailable\":[\"radio\",\"games\",\"security\",\"search\",\"discover\",\"p2p\",\"studio\",\"live-tv\",\"devices\",\"session\",\"pair\",\"hls\"]}",
                       head_only);
     } else if (path == "/nougat/v1/catalog") {
         send_catalog(client, state, head_only);
