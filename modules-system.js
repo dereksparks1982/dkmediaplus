@@ -13,7 +13,7 @@
   let panel = 'Diagnostics';
   let lastReport = null;
   const logs = [];
-  const panels = ['Diagnostics','Server','Controller','Virus Scan','Metadata','Logs'];
+  const panels = ['Diagnostics','Web Services','Server','Controller','Virus Scan','Metadata','Logs'];
 
   function log(message){
     logs.unshift(`${new Date().toLocaleString()}  ${message}`);
@@ -113,6 +113,8 @@
   }
 
   async function renderPanel(){
+    window.DKMediaWebServices?.stop();
+    if(panel==='Web Services') { window.DKMediaWebServices?.render(document.getElementById('systemBody')); return; }
     if(panel==='Controller') { window.DKMediaControllerSettings?.render(document.getElementById('systemBody')); return; }
     window.DKMediaControllerSettings?.stopMonitor();
     if(panel==='Server')return renderServer();
