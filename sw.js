@@ -1,6 +1,6 @@
 // Static GitHub Pages app shell only. Never cache personal media catalogs,
 // artwork, video, stream responses or cross-origin media host traffic.
-const CACHE = 'dk-media-web-v45-capability-repair-20261111';
+const CACHE = 'dk-media-web-v46-endpoint-diagnostics-20261113';
 const SHELL = [
   './legal-notice.css',
   './legal-notice.js',
@@ -61,6 +61,7 @@ const SHELL = [
   './controller-remote.js',
   './controller-remote.css',
   './controller-settings.js',
+  './web-service-diagnostics.js',
   './controller-settings.css',
   './modules-media-card-actions.js',
   './manifest.webmanifest',
