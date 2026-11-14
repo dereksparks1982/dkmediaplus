@@ -1,3 +1,13 @@
+## v0.0.69 web functionality: endpoint diagnostics and local playback (2026-11-13)
+
+- **System → Web Services** offers two read-only diagnostic passes: core host health/catalog/capabilities, and additional module route checks. The panel reports HTTP status, bounded request duration, JSON response availability, and actionable connectivity/authentication guidance.
+- The web player's **CONNECT → Test connection** now validates both health **and actual catalog access** before reporting the host usable; a healthy but unauthorized server is explicitly distinguished from a playable library.
+- **Player → Open local media file** lets the user select a device-local video/audio file with the browser's native file picker. The selected file plays via an in-memory object URL, not via a server upload. Previous local object URLs are revoked when the player changes source, on page exit, or on host change. Codec support remains browser-dependent.
+- Both `main` and the static `gh-pages` frontend were updated, including responsive styles and service worker cache versioning.
+- JS parsing checks passed for new scripts, System, host panel, and service worker on both branches. This is **source verification**, not proof of remote bridge functionality or user-device playback.
+- Outstanding: real Pages smoke tests, secure authorized HTTPS/CORS bridge, supported backend contracts for Radio/Live TV/Search/Games/Studio, a proper native-side browser asset bundle, and real-media acceptance.
+- Version stays **v0.0.69**; no GitHub Actions or binary downloads.
+
 ## DK Media Plus v0.0.69 Web player contract repair (2026-11-11)
 
 This source repair addresses reproducible discrepancies between the full GitHub Pages viewer and its LAN host implementation.
