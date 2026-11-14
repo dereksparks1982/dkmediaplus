@@ -6,6 +6,7 @@
     ['health','/nougat/v1/health','Core'],
     ['catalog','/nougat/v1/catalog','Core'],
     ['capabilities','/nougat/v1/capabilities','Discovery'],
+    ['search','/nougat/v1/search?q=','Local catalog'],
     ['live-tv','/nougat/v1/live-tv?action=status','Host module'],
     ['radio','/nougat/v1/radio?action=status','Host module'],
     ['games','/nougat/v1/games?action=status','Host module'],
