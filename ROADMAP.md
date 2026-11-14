@@ -1,3 +1,12 @@
+## DK Media Plus v0.0.69 browser local queue and catalog synchronization (2026-11-14)
+
+- The full web Player's **Open local media file** now accepts up to 200 compatible audio/video files through a multiple-selection file picker and shows a bounded, scrollable local queue.
+- Local files remain on the user's device. Playback uses temporary browser object URLs, with Previous/Next navigation, automatic queue advance at end of file, explicit Clear local queue, and blob URL cleanup when switching sources or leaving.
+- The main player clears local playback flags when loading server media. The browser module bridge responds to the primary player's `nougat:catalog-updated` event, updating active Discover/Search surfaces instead of requiring a tab change.
+- Updated both `main` and `gh-pages`, responsive CSS, and the service worker cache revision. Parsing checks passed for `app.js`, `modules-bridge.js`, `web-local-files.js` and `sw.js` on both branches, and checked interface selectors are present.
+- **Unverified:** actual file selection and codec playback on Firefox/iPhone, GitHub Pages deployment and backend feature parity. Native radio, Games, Live TV, Search and Studio server contracts remain separate outstanding work.
+- **Version remains v0.0.69. No GitHub Actions, executable or distribution download.**
+
 ## v0.0.69 web functionality: endpoint diagnostics and local playback (2026-11-13)
 
 - **System → Web Services** offers two read-only diagnostic passes: core host health/catalog/capabilities, and additional module route checks. The panel reports HTTP status, bounded request duration, JSON response availability, and actionable connectivity/authentication guidance.
