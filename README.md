@@ -37,7 +37,7 @@ DK Watch is the straightforward way to watch from a phone or tablet: connect to 
 | **Music & Radio** | Play and explore audio sources, internet radio, compatible receivers, and radio/signal features. |
 | **Games** | Organize games and supported emulators, artwork, controller settings, and game launching in the DK Media Plus experience. User-owned game content and firmware are not included. |
 | **Studio** | Media conversion, remuxing, audio extraction, export queues, editing foundations, file processing, and other production tools. |
-| **Search, Streaming & P2P** | Explore media and online resources through supported search, stream and transfer facilities. |
+| **Search, Streaming & P2P** | Search your local media catalog in the browser, including an authenticated LAN search route with direct playback by title ID. Online search, crawler and P2P workflows require separate backends and are not implied by this local search feature. |
 | **Network & System** | Diagnose services, connected hardware, streaming connectivity, and system health. |
 
 DK Media Plus is an evolving project. Features vary by platform, compatible hardware, external services, and installed backends. **A feature in the source code or roadmap is not necessarily available in the current tested application.** Some advanced tools are native-only and cannot run in a browser.
