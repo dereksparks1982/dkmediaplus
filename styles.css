@@ -526,3 +526,8 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--green-hot);
   .dk-local-media-controls { padding:6px; }
   .dk-local-media-controls .sheet-button { flex:1 1 120px; }
 }
+
+.dk-local-media-controls .dk-local-queue { flex:1 1 100%; display:flex; flex-wrap:wrap; gap:5px; max-height:110px; overflow-y:auto; padding:3px 0; }
+.dk-local-media-controls .dk-local-queue[hidden] { display:none; }
+.dk-local-media-controls .dk-local-queue .sheet-button { flex:0 1 210px; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; text-align:left; }
+.dk-local-caption { width:100%; color:#91d4a9; font-size:10px; }
