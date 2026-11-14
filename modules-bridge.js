@@ -312,6 +312,23 @@
     if (window.NougatLegalAccepted === true)
       void ensureCatalog(true).then(() => queueMediaCardArtwork());
   });
+  // The main player publishes catalog updates after a refresh. Refresh the
+  // visible search/discovery module from the same in-memory library, rather
+  // than waiting for another tab switch or a second network request.
+  let moduleRefreshQueued = false;
+  window.addEventListener('nougat:catalog-updated', () => {
+    if (window.NougatLegalAccepted !== true || moduleRefreshQueued) return;
+    moduleRefreshQueued = true;
+    queueMicrotask(() => {
+      moduleRefreshQueued = false;
+      const mainItems = window.NougatWebPlayer?.getCatalog?.();
+      if (Array.isArray(mainItems)) catalog = mainItems.slice(0,3000);
+      queueMediaCardArtwork();
+      const view = document.querySelector('.rail-button.active')?.dataset.view;
+      if (view === 'discover' || view === 'search') activate(view);
+    });
+  });
+
   window.addEventListener('nougat:host-changed', () => {
     catalogRevision++;
     catalog = [];
