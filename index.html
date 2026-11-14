@@ -129,6 +129,11 @@
             <button type="button" class="sheet-button transport-button" id="fullscreenButton" title="Fullscreen">⛶</button>
           </div>
         </div>
+        <div class="module-toolbar dk-local-media-controls">
+          <button type="button" class="sheet-button" id="dkLocalMediaOpen">Open local media file</button>
+          <input type="file" id="dkLocalMediaFile" accept="video/*,audio/*,.mkv,.avi,.flac" hidden>
+          <span id="dkLocalMediaStatus" role="status" aria-live="polite">Select a video or audio file stored on this device.</span>
+        </div>
         <p class="player-status" id="playerStatus" aria-live="polite">READY</p>
       </div>
     </section>
@@ -195,5 +200,6 @@
   <script src="./controller-remote.js"></script>
   <script src="./controller-settings.js"></script>
   <script src="./web-service-diagnostics.js"></script>
+  <script src="./web-local-files.js"></script>
 </body>
 </html>
