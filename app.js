@@ -375,6 +375,7 @@
     if (selected && selected.id !== item.id) saveResume(true);
     delete player.dataset.nougatExternalStream;
     delete player.dataset.nougatExternalLabel;
+    delete player.dataset.dkLocalFile;
     selected = item;
     usingCompatibility = compatibility;
     autoFallbackArmed = !compatibility;
