@@ -369,9 +369,50 @@ bool send_catalog(int client, const std::shared_ptr<SharedState>& state, bool he
               << '}';
     }
     std::ostringstream json;
-    json << "{\"ok\":true,\"version\":\"0.0.55\",\"count\":" << videos.size()
+    json << "{\"ok\":true,\"version\":\"0.0.69\",\"count\":" << videos.size()
          << ",\"available\":" << ready_count << ",\"items\":[" << items.str() << "]}";
     return send_response(client, 200, "OK", "application/json; charset=utf-8", json.str(), head_only);
+}
+
+// Read-only search of the same private media catalog used by the Player.
+// Do not expose filesystem paths, Jellyfin credentials, or arbitrary remote URLs.
+bool send_local_search(int client, const std::shared_ptr<SharedState>& state,
+                       const std::string& term, bool head_only) {
+    if (term.size() > 200U)
+        return send_json_error(client, 400, "Bad Request", "Search query is too long.");
+    if (term.empty())
+        return send_response(client, 200, "OK", "application/json; charset=utf-8",
+                             "{\"ok\":true,\"source\":\"local-catalog\",\"count\":0,\"results\":[]}", head_only);
+    std::vector<reddmedia::LibraryVideo> videos;
+    std::string error;
+    if (!refresh_catalog(state, videos, error))
+        return send_json_error(client, 503, "Service Unavailable",
+                               error.empty() ? "Media catalog is unavailable." : error);
+    auto lower = [](std::string value) {
+        std::transform(value.begin(), value.end(), value.begin(),
+                       [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
+        return value;
+    };
+    const std::string needle = lower(term);
+    std::ostringstream results;
+    std::size_t count=0U;
+    for (const auto& item : videos) {
+        if (count >= 100U) break;
+        if (lower(item.name).find(needle) == std::string::npos &&
+            lower(item.type).find(needle) == std::string::npos &&
+            std::to_string(item.production_year).find(needle) == std::string::npos)
+            continue;
+        if (count++) results << ',';
+        results << "{\"id\":\"" << json_escape(item.id)
+                << "\",\"name\":\"" << json_escape(item.name)
+                << "\",\"type\":\"" << json_escape(item.type)
+                << "\",\"year\":" << item.production_year << '}';
+    }
+    std::ostringstream body;
+    body << "{\"ok\":true,\"source\":\"local-catalog\",\"count\":" << count
+         << ",\"results\":[" << results.str() << "]}";
+    return send_response(client, 200, "OK", "application/json; charset=utf-8",
+                         body.str(), head_only);
 }
 
 bool send_artwork(int client,
@@ -766,9 +807,13 @@ void handle_client(int client, const std::shared_ptr<SharedState>& state) {
         send_response(client, 200, "OK", "application/json; charset=utf-8",
                       "{\"ok\":true,\"product\":\"DK Media Plus\",\"version\":\"0.0.69\","
                       "\"requiresLanTerms\":true,\"lanOnly\":true,"
-                      "\"available\":[\"health\",\"catalog\",\"artwork\",\"media\",\"transcode\",\"stream\"],"
-                      "\"unavailable\":[\"radio\",\"games\",\"security\",\"search\",\"discover\",\"p2p\",\"studio\",\"live-tv\",\"devices\",\"session\",\"pair\",\"hls\"]}",
+                      "\"available\":[\"health\",\"catalog\",\"artwork\",\"media\",\"transcode\",\"stream\",\"search\"],"
+                      "\"unavailable\":[\"radio\",\"games\",\"security\",\"discover\",\"p2p\",\"studio\",\"live-tv\",\"devices\",\"session\",\"pair\",\"hls\"]}",
                       head_only);
+    } else if (path == "/nougat/v1/search") {
+        const auto q=query_map.find("q");
+        send_local_search(client, state, q == query_map.end() ? std::string{} : q->second,
+                          head_only);
     } else if (path == "/nougat/v1/catalog") {
         send_catalog(client, state, head_only);
     } else if (path == "/nougat/v1/artwork") {
