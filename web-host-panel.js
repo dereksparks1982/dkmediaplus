@@ -34,21 +34,32 @@
   document.getElementById('webHostTest').addEventListener('click', async () => {
     const valid = host.validate(address.value);
     if (!valid) { say('Enter a valid HTTPS origin, such as https://media.example.org'); return; }
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 8000);
-    say('Testing connection...');
+    const trigger=document.getElementById('webHostTest');
+    trigger.disabled=true;
+    say('Checking server health and media catalog...');
     try {
-      const response = await fetch(valid + '/nougat/v1/health', {
-        mode: 'cors', credentials: 'omit', redirect: 'error',
-        cache: 'no-store', signal: controller.signal
-      });
-      if (!response.ok) throw new Error('HTTP ' + response.status);
-      const data = await response.json();
-      if (data.ok === false) throw new Error('Host did not report ready');
-      say('Connected to media host. Choose Save & connect to use it.');
-    } catch (error) {
-      say('Server unavailable or browser access blocked: ' +
-        (error?.name === 'AbortError' ? 'connection timed out' : String(error?.message || error)));
-    } finally { clearTimeout(timer); }
+      const tester=window.DKMediaWebServices;
+      if (!tester) throw new Error('Browser diagnostics module did not load');
+      const results=await tester.probe(valid,['health','catalog','capabilities']);
+      const health=results.find(item=>item.name==='health');
+      const catalog=results.find(item=>item.name==='catalog');
+      const capabilities=results.find(item=>item.name==='capabilities');
+      if(health?.status!=='ready') {
+        say('Cannot reach media host: '+(health?.detail||'No health response')+
+          '. Check HTTPS, the host address and browser CORS permission.');
+      } else if(catalog?.status!=='ready') {
+        say('Server responds, but your library cannot load: '+
+          (catalog?.detail||'Catalog unavailable')+
+          '. Check bridge authentication and catalog permissions before saving.');
+      } else {
+        const count=Array.isArray(catalog.data?.items)?catalog.data.items.length:
+          Number.isFinite(Number(catalog.data?.count))?Number(catalog.data.count):'unknown';
+        say('Media host and catalog are reachable ('+count+' titles reported). '+
+          (capabilities?.status==='ready'?'Module capability list available. ':'Module support unverified. ')+
+          'Choose Save & connect to use this host.');
+      }
+    } catch(error) {
+      say('Connection test could not complete: '+String(error?.message||error));
+    } finally { trigger.disabled=false; }
   });
 })();
