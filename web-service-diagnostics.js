@@ -19,8 +19,7 @@
   const esc = input => String(input ?? '').replace(/[&<>"']/g, c =>
     ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   function base() {
-    return window.NougatWebHost?.getBase() ||
-      (location.protocol === 'http:' ? '' : '');
+    return window.NougatWebHost?.getBase() || '';
   }
   function stop() { generation++; }
   async function fetchJson(path, origin, signal) {
@@ -37,7 +36,7 @@
       const snippet = await response.text();
       let data = null;
       try { data=JSON.parse(snippet); } catch (_) {}
-      return {ok:response.ok && data?.ok!==false,code:response.status,data};
+      return {ok:response.ok && data !== null && typeof data === 'object' && data.ok !== false,code:response.status,data};
     } finally {clearTimeout(timeout);signal?.removeEventListener('abort',abort);}
   }
   const cleanError = err => {
@@ -59,7 +58,7 @@
         const response=await fetchJson(route[1],origin,signal);
         results.push({name,group:route[2],status:response.ok?'ready':'unavailable',
           code:response.code,latency:Math.round(performance.now()-started),
-          detail:response.ok?'Reachable':response.data?.error||'HTTP '+response.code,
+          detail:response.ok?'JSON endpoint responded':response.data?.error||'HTTP '+response.code+' or invalid JSON',
           data:response.data});
       } catch (err) {
         results.push({name,group:route[2],status:'unavailable',code:null,
@@ -101,7 +100,7 @@
     advice.replaceChildren();
     const summary=document.createElement('strong');
     summary.textContent=results.filter(x=>x.status==='ready').length+' of '+results.length+
-      ' endpoints responded successfully.';
+      ' endpoints responded with successful JSON responses. This does not prove individual features work.';
     advice.append(summary);
     for (const tip of tips) {const p=document.createElement('p');p.textContent=tip;advice.append(p);}
     root.querySelector('#dkServicesHost').textContent=origin||location.origin;
