@@ -19,6 +19,8 @@ Current development line: **v0.0.69**. It brings personal movies and TV, music a
 
 The browser viewers are prepared on the dedicated, web-only `gh-pages` branch. The repository's Pages setting must publish from `gh-pages` at `/(root)`. GitHub Pages deployment remains unverified until that setting is corrected and GitHub reports success. Your personal media files **are not uploaded to GitHub**. Playback, catalogs, and artwork come from your running DK Media Plus media server through an HTTPS bridge, including the compatible bridge used for the Hanafi web viewer.
 
+In the full browser player, **Player → Open local media file** plays compatible audio or video files selected directly from your device, even without a running media host. Your selected file stays on your device. **System → Web Services** checks core server and module endpoints so unsupported host features can be distinguished from working services.
+
 DK Watch is the straightforward way to watch from a phone or tablet: connect to your host, search movies or TV, tap a title, play it, and resume later. Watch's **Continue** filter and the full player's Continue Watching section use the same per-server browser-local playback positions. The full web player has a larger interface with additional modules.
 
 **Connect once for both viewers:** In the full web player, choose **CONNECT** in the top bar to enter or test your HTTPS media server. Quick Watch uses the same saved server setting in that browser.
