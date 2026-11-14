@@ -1,3 +1,13 @@
+## v0.0.69 web Search and native LAN catalog integration (2026-11-14)
+
+- Implemented an **authenticated, read-only `GET /nougat/v1/search?q=`** route in the native Linux LAN media server. Queries are length-limited, read from the same Jellyfin-backed library as the existing catalog, and return up to 100 records containing only media ID, title, type and year, without exposing disk paths or server credentials. Empty queries return an empty result list.
+- The browser Search module recognizes `source: "local-catalog"`, renders results as interactive media rows, and routes them to the primary player's exact-ID playback action. Existing local browser catalog search remains available when server search cannot be reached.
+- Non-catalog search results are limited to valid HTTP(S) URLs, constructed as DOM elements and never as unvalidated HTML URL interpolations.
+- **System → Web Services** now includes search probing. Updated the `main` and `gh-pages` service worker revisions to distribute the changed Search UI.
+- Native LAN service `capabilities` now describes `search` as available. This means *private media catalog search only*, not internet search, crawling, or P2P. Its security boundary remains the LAN terms-session cookie; no wildcard cross-origin media access was added.
+- JS syntax checks pass on both web branches. **Native C++ compilation, live site load, LAN session, actual Jellyfin catalog search and media playback are not verified** in this source-edit session. Server changes require the native app to be rebuilt by the project maintainer before becoming active.
+- Version remains **v0.0.69**, with no GitHub Actions, executable or downloadable package.
+
 ## DK Media Plus v0.0.69 browser local queue and catalog synchronization (2026-11-14)
 
 - The full web Player's **Open local media file** now accepts up to 200 compatible audio/video files through a multiple-selection file picker and shows a bounded, scrollable local queue.
