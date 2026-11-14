@@ -82,7 +82,57 @@
   function renderRows(rows){return rows.length?rows.map(x=>`<button type="button" class="module-result-row" data-local-id="${esc(x.id)}"><span>${esc(x.name)}</span><span>${esc(x.type)}</span><span>${x.year||''}</span></button>`).join(''):'<div class="module-empty">No local matches.</div>';}
   function renderSecureSearch(){
     const body=document.getElementById('completeSearchBody');if(!body)return;body.innerHTML=`<h2 class="module-heading">SEARCH</h2><div class="module-field"><span>QUERY</span><input id="secureQuery" type="search" autocomplete="off" spellcheck="false"></div><div class="module-toolbar">${button('Search','secureSearch')}${button('Raw','secureRaw')}${button('Library','secureLibrary')}</div><div class="status-line" id="secureStatus">LOCAL INDEX READY</div><div class="module-result-list" id="secureResults"></div>`;
-    const run=async(raw=false)=>{const q=document.getElementById('secureQuery').value.trim(),status=document.getElementById('secureStatus'),out=document.getElementById('secureResults');if(!q){out.innerHTML='<div class="module-empty">Enter a search query.</div>';return;}status.textContent='SEARCHING LOCAL INDEX';let rows=localMatches(q);let remote=null;try{remote=await getJson(`/nougat/v1/search?q=${encodeURIComponent(q)}&raw=${raw?'1':'0'}`);}catch(_){}if(remote&&Array.isArray(remote.results)){out.innerHTML=remote.results.length?remote.results.map(r=>`<a class="module-result-row" href="${esc(r.url||'#')}" target="_blank" rel="noopener"><span>${esc(r.title||r.url||'Result')}</span><span>${esc(r.domain||r.source_network||'Nougat')}</span><span>${esc(r.snippet||'')}</span></a>`).join(''):'<div class="module-empty">No Nougat index matches.</div>';status.textContent=remote.privacy_stage||'NOUGAT SEARCH COMPLETE';return;}out.innerHTML=renderRows(rows);out.querySelectorAll('[data-local-id]').forEach(row=>row.addEventListener('click',()=>{const item=items().find(x=>x.id===row.dataset.localId);if(item&&hostRef?.playItem)hostRef.playItem(item);}));status.textContent=`LOCAL CATALOG • ${rows.length} MATCH${rows.length===1?'':'ES'}`;};
+    const run=async(raw=false)=>{
+      const query=document.getElementById('secureQuery');
+      const status=document.getElementById('secureStatus');
+      const out=document.getElementById('secureResults');
+      if(!query||!status||!out)return;
+      const q=query.value.trim();
+      if(!q){out.innerHTML='<div class="module-empty">Enter a search query.</div>';return;}
+      status.textContent='SEARCHING LOCAL MEDIA CATALOG';
+      let rows=localMatches(q), source='BROWSER LIBRARY';
+      // A LAN host with the new search API supplies exact media IDs and titles.
+      // Other supported bridges may still return general web search results.
+      try {
+        const remote=await getJson(`/nougat/v1/search?q=${encodeURIComponent(q)}&raw=${raw?'1':'0'}`);
+        if(remote.source==='local-catalog' && Array.isArray(remote.results)) {
+          rows=remote.results.map(item=>({
+            id:String(item.id||''),name:String(item.name||'Untitled'),
+            type:String(item.type||'Movie'),year:Number(item.year)||0
+          })).filter(item=>item.id);
+          source='HOST MEDIA CATALOG';
+        } else if(Array.isArray(remote.results)) {
+          const results=remote.results.filter(item=>{
+            try {return ['https:','http:'].includes(new URL(item.url).protocol);}catch(_){return false;}
+          });
+          out.replaceChildren();
+          for(const result of results){
+            const a=document.createElement('a');a.className='module-result-row';
+            a.href=result.url;a.target='_blank';a.rel='noopener noreferrer';
+            const title=document.createElement('span');title.textContent=result.title||result.url;
+            const domain=document.createElement('span');domain.textContent=result.domain||result.source_network||'Web';
+            const snippet=document.createElement('span');snippet.textContent=result.snippet||'';
+            a.append(title,domain,snippet);out.append(a);
+          }
+          if(!results.length)out.innerHTML='<div class="module-empty">No results from this service.</div>';
+          status.textContent=remote.privacy_stage||'HOST SEARCH COMPLETE';
+          return;
+        }
+      } catch(error) {
+        // Local search remains functional when the remote API is unavailable.
+        source='BROWSER LIBRARY (HOST SEARCH UNAVAILABLE)';
+      }
+      out.innerHTML=renderRows(rows);
+      out.querySelectorAll('[data-local-id]').forEach(row=>row.addEventListener('click',()=>{
+        const id=row.dataset.localId;
+        // Prefer the primary player, which owns exact-ID playback and resume.
+        if(window.NougatWebPlayer?.playById?.(id))return;
+        const item=items().find(entry=>entry.id===id);
+        if(item&&hostRef?.playItem)hostRef.playItem(item);
+        else if(hostRef?.setView)hostRef.setView('library');
+      }));
+      status.textContent=`${source} • ${rows.length} MATCH${rows.length===1?'':'ES'}`;
+    };
     bind('secureSearch',()=>run(false));bind('secureRaw',()=>run(true));bind('secureLibrary',()=>hostRef?.setView&&hostRef.setView('library'));document.getElementById('secureQuery').addEventListener('keydown',e=>{if(e.key==='Enter')run(false);});
   }
   function renderCrawler(){
