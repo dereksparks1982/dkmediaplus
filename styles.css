@@ -507,3 +507,22 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--green-hot);
   .module-rail .rail-button span:last-child { font-size: 7px; }
   .app-content { left: 66px; }
 }
+
+
+/* Local browser playback controls occupy their own row, not the seek bar. */
+.dk-local-media-controls {
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:8px;
+  margin:8px 0 4px;
+  padding:6px 8px;
+  border:1px solid #195d3b;
+  background:#061b13;
+}
+.dk-local-media-controls .sheet-button { flex:0 0 auto; min-height:34px; padding:7px 10px; }
+.dk-local-media-controls span { flex:1 1 180px; min-width:0; font-size:11px; line-height:1.5; color:#a7ceb7; overflow-wrap:anywhere; }
+@media(max-width:700px) {
+  .dk-local-media-controls { padding:6px; }
+  .dk-local-media-controls .sheet-button { flex:1 1 120px; }
+}
