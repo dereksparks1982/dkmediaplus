@@ -131,8 +131,10 @@
         </div>
         <div class="module-toolbar dk-local-media-controls">
           <button type="button" class="sheet-button" id="dkLocalMediaOpen">Open local media file</button>
-          <input type="file" id="dkLocalMediaFile" accept="video/*,audio/*,.mkv,.avi,.flac" hidden>
+          <input type="file" id="dkLocalMediaFile" accept="video/*,audio/*,.mp4,.m4v,.webm,.mov,.ogv,.ogg,.mp3,.m4a,.wav,.flac,.aac" multiple hidden>
+          <button type="button" class="sheet-button" id="dkLocalMediaClear" disabled>Clear local queue</button>
           <span id="dkLocalMediaStatus" role="status" aria-live="polite">Select a video or audio file stored on this device.</span>
+        <div id="dkLocalMediaQueue" class="dk-local-queue" aria-label="Local playback queue" hidden></div>
         </div>
         <p class="player-status" id="playerStatus" aria-live="polite">READY</p>
       </div>
