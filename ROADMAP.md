@@ -1,3 +1,12 @@
+## v0.0.69 web startup black-screen repair (2026-11-15)
+
+- Verified all 43 `gh-pages` script references exist and pass JavaScript syntax parsing. Live Pages HTML fetch and interactive browser runtime remained inaccessible in this environment.
+- Root startup weakness: Home and Library were not rendered until sequential remote health/catalog requests completed. If the bridge was offline or inaccessible, users could see an almost entirely dark interface for a long time.
+- Render Home, Library and existing Player navigation immediately, then check health and catalog concurrently with handled failures. The startup state now displays an explicit in-page message with CONNECT/local playback instructions even if the server is unavailable.
+- Added visible responsive startup/offline status to the HTML/CSS, and bumped the service-worker app-shell cache on both `main` and `gh-pages`.
+- Checked updated JavaScript parsing, status element/CSS wiring, parallel request path and cache revision on both branches. The **reported black screen is not confirmed resolved on user hardware** without opening the published site.
+- Version remains **v0.0.69**; no GitHub Actions, executable or download.
+
 ## v0.0.69 web Search and native LAN catalog integration (2026-11-14)
 
 - Implemented an **authenticated, read-only `GET /nougat/v1/search?q=`** route in the native Linux LAN media server. Queries are length-limited, read from the same Jellyfin-backed library as the existing catalog, and return up to 100 records containing only media ID, title, type and year, without exposing disk paths or server credentials. Empty queries return an empty result list.
