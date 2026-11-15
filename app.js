@@ -651,16 +651,42 @@
   });
 
   async function initialLoad() {
+    // Render the shell synchronously. An unreachable HTTPS bridge must never
+    // leave the user staring at an empty dark panel while requests time out.
     createVolumeBank();
     setView(viewFromHash(), false);
-    await loadHealth();
-    await loadCatalog();
-    if (!items.length) {
-      window.setTimeout(async () => {
-        if (window.NougatLegalAccepted === true) { await loadHealth(); await loadCatalog(); }
-      }, 1500);
-    }
+    renderHome();
+    renderLibrary();
+    catalogStatus.textContent = 'Connecting to your media host. The player and local-file controls remain available offline.';
+    const boot=document.getElementById('dkBootStatus');
+    const showBoot=(message,failed=false)=>{
+      if (!boot) return;
+      boot.textContent=message;
+      boot.classList.toggle('dk-boot-warning',failed);
+      boot.hidden=false;
+    };
+    showBoot('DK Media Plus is ready. Checking the connected media server...');
     startConnectivityChecks();
+    try {
+      // Health and catalog are independent. Checking them concurrently keeps
+      // startup bounded when the server or cross-origin bridge is unavailable.
+      const checks=await Promise.allSettled([loadHealth(),loadCatalog()]);
+      const catalog=checks[1];
+      const healthy=checks[0].status==='fulfilled' && checks[0].value===true;
+      if (catalog.status==='rejected') throw catalog.reason;
+      if (!healthy && !items.length) {
+        showBoot('Media server unavailable. Use CONNECT to check the host, or PLAYER to open a file on this device.',true);
+        return;
+      }
+      if (!items.length) {
+        showBoot('No media found on the connected server. Use CONNECT to check your library, or open a local file.',true);
+      } else if (boot) {
+        boot.hidden=true;
+      }
+    } catch (error) {
+      showBoot('Media library could not initialize. Use CONNECT to check the host. '+
+        String(error?.message||error||'Unknown error').slice(0,140),true);
+    }
   }
 
   if ('serviceWorker' in navigator && location.protocol === 'https:') {
