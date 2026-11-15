@@ -17,7 +17,7 @@ Current development line: **v0.0.69**. It brings personal movies and TV, music a
 
 **[Open the full DK Media Web Player](https://dereksparks1982.github.io/dkmediaplus/)**
 
-The browser viewers are prepared on the dedicated, web-only `gh-pages` branch. The repository's Pages setting must publish from `gh-pages` at `/(root)`. GitHub Pages deployment remains unverified until that setting is corrected and GitHub reports success. Your personal media files **are not uploaded to GitHub**. Playback, catalogs, and artwork come from your running DK Media Plus media server through an HTTPS bridge, including the compatible bridge used for the Hanafi web viewer.
+The browser viewers are contained on the single `main` branch, alongside the native Linux application. To publish the site without a custom deployment workflow, configure **GitHub repository → Settings → Pages → Deploy from a branch → `main` → `/(root)`**, then save. The repository includes `.nojekyll`. The GitHub Pages publishing setting and live deployment status have not been verified through the current connector. Do not recreate `gh-pages`. Your personal media files **are not uploaded to GitHub**. Playback, catalogs, and artwork come from your running DK Media Plus media server through an HTTPS bridge, including the compatible bridge used for the Hanafi web viewer.
 
 In the full browser player, **Player → Open local media file** plays compatible audio or video files selected directly from your device, including a multi-file queue with Previous/Next, automatic advance and Clear Queue, even without a running media host. Your selected file stays on your device. **System → Web Services** checks core server and module endpoints so unsupported host features can be distinguished from working services.
 
