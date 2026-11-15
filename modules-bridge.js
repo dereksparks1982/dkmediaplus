@@ -280,18 +280,16 @@
     surface.replaceChildren(shell);
   }
 
-  document.querySelectorAll('.rail-button').forEach((button) => {
-    button.addEventListener('click', () => {
-      const view = button.dataset.view;
-      if (['home','library'].includes(view)) queueMicrotask(queueMediaCardArtwork);
-      if (!['home','player','library'].includes(view)) queueMicrotask(() => activate(view));
-    });
-  });
-
-  window.addEventListener('popstate', () => {
-    const view = location.hash.replace(/^#/, '').trim().toLowerCase();
-    if (['home','library'].includes(view)) setTimeout(queueMediaCardArtwork, 0);
-    if (view && !['home','player','library'].includes(view)) setTimeout(() => activate(view), 0);
+  // Subscribe to the player's authoritative navigation event. Previously
+  // module rendering depended on event-listener ordering and separate hash/
+  // click handlers, leaving a highlighted tab with stale or empty content.
+  window.addEventListener('dkmedia:view-changed', (event) => {
+    const view = String(event.detail?.view || '').toLowerCase();
+    if (view === 'home' || view === 'library') {
+      queueMicrotask(queueMediaCardArtwork);
+    } else if (view && view !== 'player') {
+      activate(view);
+    }
   });
 
   function initializeModules() {
