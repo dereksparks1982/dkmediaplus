@@ -199,6 +199,9 @@
       const nextHash = `#${view}`;
       if (location.hash !== nextHash) history.pushState({ view }, '', nextHash);
     }
+    // Navigation owns view state; modules subscribe to this exact transition.
+    // A click, a link into another tab, and browser history must behave alike.
+    window.dispatchEvent(new CustomEvent('dkmedia:view-changed', { detail: { view } }));
   }
 
   function viewFromHash() {
