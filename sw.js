@@ -1,6 +1,6 @@
 // Static GitHub Pages app shell only. Never cache personal media catalogs,
 // artwork, video, stream responses or cross-origin media host traffic.
-const CACHE = 'dk-media-web-v49-local-search-20261114';
+const CACHE = 'dk-media-web-v50-visible-startup-20261115';
 const SHELL = [
   './legal-notice.css',
   './legal-notice.js',
