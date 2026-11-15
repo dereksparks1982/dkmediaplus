@@ -58,6 +58,18 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--green-hot);
   height: auto;
   object-fit: contain;
 }
+.topbar-brand-name {
+  display: block;
+  flex: 0 1 auto;
+  min-width: 0;
+  color: #c9f9d9;
+  font-size: clamp(12px, 2.6vw, 17px);
+  font-weight: 800;
+  letter-spacing: .075em;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
 .topbar-state {
   min-width: 0;
   display: flex;
